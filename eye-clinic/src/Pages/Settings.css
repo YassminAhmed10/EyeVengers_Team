@@ -514,4 +514,40 @@ input:checked + .toggle-slider:before {
     flex-direction: column;
     text-align: center;
   }
+
+/* إضافة إلى Settings.css */
+
+.user-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #e2e8f0;
+}
+
+.user-avatar-large .material-symbols-outlined {
+  font-size: 2.5rem;
+  color: #3b82f6;
+}
+
+/* Patient Page Container */
+.patient-page-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.patient-main-content {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
 }
