@@ -6,14 +6,54 @@ const AppointmentsTable = () => {
   const navigate = useNavigate();
 
   const appointments = [
-    { time: "09:00 AM", patientName: "Yassmin Ahmed", status: "Completed" },
-    { time: "10:30 AM", patientName: "Maysoun Hassan", status: "Cancelled" },
-    { time: "11:15 AM", patientName: "Zeina Mohamed", status: "Completed" },
-    { time: "01:00 PM", patientName: "Doha Waleed", status: "Upcoming" },
-    { time: "02:00 PM", patientName: "Myrna Ahmed", status: "Upcoming" },
-    { time: "03:30 PM", patientName: "Sara Mostfa", status: "Completed" },
-    { time: "04:15 PM", patientName: "Mariam Mohamed", status: "Upcoming" },
-    { time: "05:00 PM", patientName: "Laila Mohamed", status: "Cancelled" },
+    { 
+      time: "09:00 AM", 
+      patientName: "Yassmin Ahmed", 
+      patientId: "1001",
+      status: "Completed" 
+    },
+    { 
+      time: "10:30 AM", 
+      patientName: "Maysoun Hassan", 
+      patientId: "1002",
+      status: "Cancelled" 
+    },
+    { 
+      time: "11:15 AM", 
+      patientName: "Zeina Mohamed", 
+      patientId: "1003",
+      status: "Completed" 
+    },
+    { 
+      time: "01:00 PM", 
+      patientName: "Doha Waleed", 
+      patientId: "1004",
+      status: "Upcoming" 
+    },
+    { 
+      time: "02:00 PM", 
+      patientName: "Myrna Ahmed", 
+      patientId: "1005",
+      status: "Upcoming" 
+    },
+    { 
+      time: "03:30 PM", 
+      patientName: "Sara Mostfa", 
+      patientId: "1006",
+      status: "Completed" 
+    },
+    { 
+      time: "04:15 PM", 
+      patientName: "Mariam Mohamed", 
+      patientId: "1007",
+      status: "Upcoming" 
+    },
+    { 
+      time: "05:00 PM", 
+      patientName: "Laila Mohamed", 
+      patientId: "1008",
+      status: "Cancelled" 
+    },
   ];
 
   const filteredAppointments =
@@ -32,6 +72,13 @@ const AppointmentsTable = () => {
       default:
         return { icon: "help", color: "text-gray-500" };
     }
+  };
+
+  const handleViewMedicalRecord = (patientName, patientId) => {
+    // Navigate with both patient name and ID
+    navigate(`/doctor/view-medical-record/${encodeURIComponent(patientName)}`, {
+      state: { patientId } // Pass patient ID via state
+    });
   };
 
   return (
@@ -72,6 +119,9 @@ const AppointmentsTable = () => {
                   Patient Name
                 </th>
                 <th className="py-3 px-4 font-semibold text-sm text-gray-600">
+                  Patient ID
+                </th>
+                <th className="py-3 px-4 font-semibold text-sm text-gray-600">
                   Status
                 </th>
                 <th className="py-3 px-4 font-semibold text-sm text-gray-600 text-right">
@@ -93,8 +143,10 @@ const AppointmentsTable = () => {
                     <td className="py-4 px-4 font-medium text-gray-900">
                       {appointment.patientName}
                     </td>
+                    <td className="py-4 px-4 text-gray-600 font-mono">
+                      {appointment.patientId}
+                    </td>
                     <td className="py-4 px-4">
-                      {/* ✅ تم تصحيح JSX هنا */}
                       <span className={`flex items-center gap-1 ${statusConfig.color}`}>
                         <span className="material-symbols-outlined text-lg">
                           {statusConfig.icon}
@@ -105,10 +157,9 @@ const AppointmentsTable = () => {
                       </span>
                     </td>
                     <td className="py-4 px-4 text-right">
-                      {/* ✅ تم تصحيح navigate template literal */}
                       <button
                         onClick={() =>
-                          navigate(`/emr?patient=${encodeURIComponent(appointment.patientName)}`)
+                          handleViewMedicalRecord(appointment.patientName, appointment.patientId)
                         }
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
                       >

@@ -1,146 +1,235 @@
-import React, { useState } from "react";
-import Sidebar from "../DoctorDashboard/Sidebar";
-import Header from "../DoctorDashboard/Header";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import ReceptionistSidebar from "../Appointment/ReceptionistSidebar";
+import DoctorSidebar from "../DoctorDashboard/Sidebar";
 import "./Appointments.css";
 
-export default function Appointments() {
+export default function AppointmentsPage() {
   const [activeTab, setActiveTab] = useState("book");
-  const [selectedTime, setSelectedTime] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // توليد أوقات (9:00 - 17:00) بفواصل 15 دقيقة
-  const generateTimeSlots = () => {
-    const times = [];
-    for (let hour = 9; hour <= 17; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
-        const period = hour >= 12 ? "PM" : "AM";
-        const displayHour = hour > 12 ? hour - 12 : hour;
-        const mm = minute === 0 ? "00" : minute.toString().padStart(2, "0");
-        times.push(`${displayHour}:${mm} ${period}`);
-      }
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    
+    if (!isAuthenticated || !role) {
+      navigate("/login");
+      return;
     }
-    return times;
+    setUserRole(role);
+  }, [navigate]);
+
+  const renderSidebar = () => {
+    if (userRole === "Receptionist") {
+      return <ReceptionistSidebar />;
+    } else if (userRole === "Doctor") {
+      return <DoctorSidebar />;
+    }
+    return null;
   };
 
-  const timeSlots = generateTimeSlots();
+  // Determine if this is a doctor route
+  const isDoctorRoute = location.pathname.startsWith('/doctor');
+
+  if (!userRole) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="appointments-container">
-      <Sidebar />
-      <div className="appointments-content">
-        <Header />
-        <div className="appointments-box">
-          <div className="appointments-header">
-            <h1>Appointments</h1>
-            <p>Book or manage your appointments</p>
-          </div>
-
-          {/* Tabs */}
-          <div className="appointments-tabs">
-            <button
-              className={`tab-btn ${activeTab === "book" ? "active" : ""}`}
-              onClick={() => setActiveTab("book")}
-            >
-              Book an Appointment
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "manage" ? "active" : ""}`}
-              onClick={() => setActiveTab("manage")}
-            >
-              Manage Appointments
-            </button>
-          </div>
-
-          {/* محتوى الصفحة */}
-          {activeTab === "book" ? (
-            <div className="appointment-card">
-              <h2>Book Your Appointment</h2>
-              <p className="subtitle">Fill the form below</p>
-
-              <form
-                className="appointment-form"
-                onSubmit={(e) => e.preventDefault()}
-              >
-                <div className="form-grid">
-                  <label>
-                    Patient Name
-                    <input type="text" placeholder="Full name" />
-                  </label>
-                  <label>
-                    Phone Number
-                    <input type="tel" placeholder="(123) 456-7890" />
-                  </label>
-                  <label>
-                    Email
-                    <input type="email" placeholder="email@example.com" />
-                  </label>
-                  <label>
-                    Select Date
-                    <input type="date" />
-                  </label>
-                  <label>
-                    Select Time
-                    <select
-                      value={selectedTime}
-                      onChange={(e) => setSelectedTime(e.target.value)}
-                    >
-                      <option value="">Select a time</option>
-                      {timeSlots.map((time, i) => (
-                        <option key={i} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="full-width">
-                    Reason for Visit
-                    <textarea placeholder="Briefly describe the reason..." />
-                  </label>
-                </div>
-
-                <div className="form-buttons">
-                  <button type="reset" className="btn cancel">
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn submit">
-                    Request Appointment
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <div className="appointment-card">
-              <h2>Manage Appointments</h2>
-              <p className="subtitle">
-                View and manage your scheduled appointments
+    <div className="appointments-modern-container">
+      {renderSidebar()}
+      
+      <div className="appointments-main-content">
+        <header className="appointments-header">
+          <div className="header-main">
+            <div className="header-titles">
+              <h1>
+                {isDoctorRoute ? "Doctor Appointments" : "Appointment Management"}
+              </h1>
+              <p>
+                {isDoctorRoute 
+                  ? "View and manage your appointments" 
+                  : "Book and manage patient appointments efficiently"
+                }
               </p>
-
-              <table className="appointments-table">
-                <thead>
-                  <tr>
-                    <th>Patient</th>
-                    <th>Contact</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Reason</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>John Doe</td>
-                    <td>+20 111 222 333</td>
-                    <td>Nov 2, 2025</td>
-                    <td>10:00 AM</td>
-                    <td>Routine check</td>
-                    <td>
-                      <button className="small-btn approve">Approve</button>
-                      <button className="small-btn reject">Reject</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
-          )}
+            <div className="header-stats">
+              <div className="stat-item">
+                <span className="stat-number">12</span>
+                <span className="stat-label">Today's Appointments</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">5</span>
+                <span className="stat-label">Pending</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">45</span>
+                <span className="stat-label">This Week</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div className="appointments-content">
+          <div className="content-container">
+            <div className="appointments-tabs">
+              <button
+                className={`tab-btn ${activeTab === "book" ? "active" : ""}`}
+                onClick={() => setActiveTab("book")}
+              >
+                <span className="material-symbols-outlined">event_available</span>
+                {isDoctorRoute ? "Schedule Appointment" : "Book New Appointment"}
+              </button>
+              <button
+                className={`tab-btn ${activeTab === "manage" ? "active" : ""}`}
+                onClick={() => setActiveTab("manage")}
+              >
+                <span className="material-symbols-outlined">schedule</span>
+                Manage Appointments
+              </button>
+            </div>
+
+            <div className="tab-content">
+              {activeTab === "book" ? (
+                <div className="appointment-card booking-card">
+                  <div className="card-header">
+                    <h2>
+                      {isDoctorRoute ? "Schedule New Appointment" : "Book New Appointment"}
+                    </h2>
+                    <p>
+                      {isDoctorRoute 
+                        ? "Schedule appointments with your patients" 
+                        : "Fill out the form below to schedule a new appointment"
+                      }
+                    </p>
+                  </div>
+
+                  <form className="appointment-form" onSubmit={(e) => e.preventDefault()}>
+                    <div className="form-grid">
+                      <div className="form-group">
+                        <label>Patient Full Name</label>
+                        <input 
+                          type="text" 
+                          placeholder="Enter patient's full name" 
+                          className="form-input"
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Phone Number</label>
+                        <input 
+                          type="tel" 
+                          placeholder="(123) 456-7890" 
+                          className="form-input"
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Email Address</label>
+                        <input 
+                          type="email" 
+                          placeholder="patient@example.com" 
+                          className="form-input"
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Appointment Date</label>
+                        <input 
+                          type="date" 
+                          className="form-input"
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Preferred Time</label>
+                        <select className="form-input">
+                          <option value="">Select a time slot</option>
+                          <option value="09:00">09:00 AM</option>
+                          <option value="10:00">10:00 AM</option>
+                          <option value="11:00">11:00 AM</option>
+                        </select>
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Appointment Type</label>
+                        <select className="form-input">
+                          <option value="">Select type</option>
+                          <option value="checkup">Routine Checkup</option>
+                          <option value="consultation">Consultation</option>
+                        </select>
+                      </div>
+                      
+                      <div className="form-group full-width">
+                        <label>Reason for Visit</label>
+                        <textarea 
+                          placeholder="Please describe the reason for the appointment in detail..." 
+                          className="form-textarea"
+                          rows="4"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-actions">
+                      <button type="reset" className="btn btn-secondary">
+                        <span className="material-symbols-outlined">clear</span>
+                        Clear Form
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        <span className="material-symbols-outlined">book_online</span>
+                        {isDoctorRoute ? "Schedule Appointment" : "Book Appointment"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                <div className="appointment-card management-card">
+                  <div className="card-header">
+                    <h2>Manage Appointments</h2>
+                    <p>View and manage all scheduled appointments</p>
+                  </div>
+
+                  <div className="table-container">
+                    <table className="appointments-table">
+                      <thead>
+                        <tr>
+                          <th>Patient Name</th>
+                          <th>Contact Info</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Type</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>John Doe</td>
+                          <td>+20 111 222 333</td>
+                          <td>Nov 2, 2025</td>
+                          <td>10:00 AM</td>
+                          <td>Consultation</td>
+                          <td>Pending</td>
+                          <td>
+                            <div className="action-buttons">
+                              <button className="action-btn view-btn">
+                                <span className="material-symbols-outlined">visibility</span>
+                              </button>
+                              <button className="action-btn edit-btn">
+                                <span className="material-symbols-outlined">edit</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

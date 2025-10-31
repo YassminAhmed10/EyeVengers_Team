@@ -1,97 +1,105 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import "./Sidebar.css";
 
 const Sidebar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear authentication data
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("isAuthenticated");
+    
+    // Navigate to login page
+    navigate("/login");
+  };
+
   return (
-    <aside className="w-80 bg-brand text-white flex flex-col fixed h-full">
-      {/* Clinic Logo & Doctor Name */}
-      <div className="p-6 flex items-center gap-3">
-        <img 
-          className="w-14 h-14 rounded-full object-cover border-2 border-white"
-          src="/src/images/logo.png"
-          alt="Clinic Logo"
-        />
-        <div className="flex flex-col">
-          <p className="font-semibold text-lg leading-tight">Dr. Mohab Khairy</p>
-          <span className="text-sm text-white/70 leading-tight">Ophthalmologist</span>
+    <aside className="doctor-sidebar">
+      {/* Header with Clinic Logo and Doctor Profile */}
+      <div className="sidebar-header">
+        <div className="clinic-logo">
+          <img 
+            src="/images/logo.png" 
+            alt="EyeCare Clinic Logo" 
+            className="clinic-logo-img"
+          />
+        </div>
+        <div className="doctor-profile-header">
+          <h1>Dr. Mohab Khairy</h1>
+          <p>Ophthalmologist</p>
         </div>
       </div>
 
-      {/* Navigation Menu */}
-      <nav className="flex-1 px-6 py-4 flex flex-col gap-4">
-        <NavLink 
-          to="/" 
-          className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-xl text-white text-lg ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
+      {/* Navigation */}
+      <nav className="sidebar-nav">
+        <Link 
+          to="/doctor" 
+          className={`nav-item ${location.pathname === '/doctor' ? 'active' : ''}`}
         >
-          <span className="material-symbols-outlined text-[28px]">dashboard</span>
-          <span className="font-semibold">Dashboard</span>
-        </NavLink>
+          <span className="nav-icon material-symbols-outlined">dashboard</span>
+          <span className="nav-label">Dashboard</span>
+        </Link>
 
-        <NavLink 
-          to="/patients" 
-          className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-xl text-white text-lg ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
+        <Link 
+          to="/doctor/patients" 
+          className={`nav-item ${location.pathname === '/doctor/patients' ? 'active' : ''}`}
         >
-          <span className="material-symbols-outlined text-[28px]">group</span>
-          <span className="font-semibold">Patients</span>
-        </NavLink>
+          <span className="nav-icon material-symbols-outlined">group</span>
+          <span className="nav-label">Patients</span>
+        </Link>
 
-        <NavLink 
-          to="/appointments"  
-          className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-xl text-white text-lg ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
+        <Link 
+          to="/doctor/appointments" 
+          className={`nav-item ${location.pathname === '/doctor/appointments' ? 'active' : ''}`}
         >
-          <span className="material-symbols-outlined text-[28px]">calendar_month</span>
-          <span className="font-semibold">Appointments</span>
-        </NavLink>
+          <span className="nav-icon material-symbols-outlined">calendar_month</span>
+          <span className="nav-label">Appointments</span>
+        </Link>
 
-        <NavLink 
-          to="/finance"  
-          className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-xl text-white text-lg ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
+        <Link 
+          to="/doctor/finance" 
+          className={`nav-item ${location.pathname === '/doctor/finance' ? 'active' : ''}`}
         >
-          <span className="material-symbols-outlined text-[28px]">receipt_long</span>
-          <span className="font-semibold">Finance</span>
-        </NavLink>
+          <span className="nav-icon material-symbols-outlined">payments</span>
+          <span className="nav-label">Finance</span>
+        </Link>
 
-        <NavLink 
-          to="/clinic-system"  
-          className={({ isActive }) => `flex items-center gap-4 px-6 py-4 rounded-xl text-white text-lg ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
+        <Link 
+          to="/doctor/clinic-system" 
+          className={`nav-item ${location.pathname === '/doctor/clinic-system' ? 'active' : ''}`}
         >
-          <span className="material-symbols-outlined text-[28px]">local_hospital</span>
-          <span className="font-semibold">Clinic System</span>
-        </NavLink>
+          <span className="nav-icon material-symbols-outlined">medical_services</span>
+          <span className="nav-label">Clinic System</span>
+        </Link>
+
+        <Link 
+          to="/doctor/settings" 
+          className={`nav-item ${location.pathname === '/doctor/settings' ? 'active' : ''}`}
+        >
+          <span className="nav-icon material-symbols-outlined">settings</span>
+          <span className="nav-label">Settings</span>
+        </Link>
+
+        {/* Logout Button - Red Color at Bottom */}
+        <div 
+          className="nav-item logout-button"
+          onClick={handleLogout}
+        >
+          <span className="nav-icon material-symbols-outlined">logout</span>
+          <span className="nav-label">Logout</span>
+        </div>
       </nav>
 
-      {/* Settings & Profile */}
-      <div className="p-4 border-t border-white/20">
-        <NavLink 
-          to="/settings" 
-          className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-lg text-white ${
-            isActive ? 'bg-white/30 font-bold shadow-lg' : 'hover:bg-white/10 transition-colors'
-          }`}
-        >
-          <span className="material-symbols-outlined text-white">settings</span>
-          <span className="font-medium">Settings</span>
-        </NavLink>
-
-        <div className="flex items-center gap-3 mt-4 p-2">
-          <img 
-            className="w-12 h-12 rounded-full object-cover border-2 border-white"
-            src="src/images/doctor.jpg"
-            alt="Dr. Mohab Khairy"
-          />
-          <div>
-            <p className="font-heading font-semibold">Dr. Mohab Khairy</p>
-            <p className="text-sm text-white/70">Ophthalmologist</p>
-          </div>
+      {/* User Profile Footer */}
+      <div className="user-profile">
+        <div className="user-avatar">
+          <span className="material-symbols-outlined">person</span>
+        </div>
+        <div className="user-info">
+          <h3>Dr. Mohab Khairy</h3>
+          <p>Ophthalmologist</p>
         </div>
       </div>
     </aside>

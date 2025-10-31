@@ -1,37 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "./PageHeader";
 import SearchBar from "./SearchBar";
 import PatientTable from "./PatientTable";
 import Pagination from "./Pagination";
-import Sidebar from "./Sidebar";
+import "../Pages/Patients.css";
 
-function PatientDashboard() {
+const PatientDashboard = () => {
+  const [patients, setPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
+  const patientsPerPage = 8;
 
-  const initialPatients = [
-    { name: "Doha Waleed", phone: "123-456-7890", date: "2023-10-26" },
-    { name: "Zeina Mohamed", phone: "098-765-4321", date: "2023-10-25" },
-    { name: "Myrna Ahmed", phone: "111-222-3333", date: "2023-10-24" },
-    { name: "Maysoun Hassan", phone: "444-555-6666", date: "2023-10-23" },
-    { name: "Yassmin Ahmed", phone: "777-888-9999", date: "2023-10-22" },
-  ];
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    
+    if (!isAuthenticated || !role) {
+      navigate("/login");
+      return;
+    }
+    setUserRole(role);
 
-  const filteredPatients = initialPatients.filter(patient =>
+    // Mock data - replace with actual API call
+    const mockPatients = [
+      { id: 1, name: "John Doe", age: 45, condition: "Cataract", lastVisit: "2024-01-15", status: "Active" },
+      { id: 2, name: "Sarah Smith", age: 32, condition: "Myopia", lastVisit: "2024-01-10", status: "Active" },
+      { id: 3, name: "Mike Johnson", age: 68, condition: "Glaucoma", lastVisit: "2024-01-08", status: "Follow-up" },
+      { id: 4, name: "Emily Brown", age: 29, condition: "Astigmatism", lastVisit: "2024-01-05", status: "Active" },
+      { id: 5, name: "Robert Wilson", age: 55, condition: "Cataract", lastVisit: "2024-01-03", status: "Post-op" },
+      { id: 6, name: "Lisa Anderson", age: 41, condition: "Presbyopia", lastVisit: "2024-01-12", status: "Active" },
+      { id: 7, name: "David Miller", age: 38, condition: "Dry Eyes", lastVisit: "2024-01-09", status: "Treatment" },
+      { id: 8, name: "Maria Garcia", age: 52, condition: "Cataract", lastVisit: "2024-01-07", status: "Scheduled" },
+    ];
+    setPatients(mockPatients);
+  }, [navigate]);
+
+  const filteredPatients = patients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.phone.includes(searchTerm)
+    patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const indexOfLastPatient = currentPage * patientsPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
+  const currentPatients = filteredPatients.slice(indexOfFirstPatient, indexOfLastPatient);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Common content for both roles
+  const renderContent = () => (
+    <>
+      <PageHeader 
+        title={userRole === "Doctor" ? "Patient Management" : "My Medical Records"} 
+        buttonText={userRole === "Doctor" ? "Add New Patient" : "Request Appointment"} 
+        onButtonClick={() => console.log(userRole === "Doctor" ? "Add new patient" : "Request appointment")}
+      />
+      
+      <SearchBar 
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        placeholder={userRole === "Doctor" ? "Search patients by name or condition..." : "Search my records..."}
+      />
+      
+      <PatientTable patients={currentPatients} userRole={userRole} />
+      
+      <Pagination
+        patientsPerPage={patientsPerPage}
+        totalPatients={filteredPatients.length}
+        paginate={paginate}
+        currentPage={currentPage}
+      />
+    </>
+  );
+
+  // If user is a doctor, just render the content (sidebar is handled by PatientPage)
+  if (userRole === "Doctor") {
+    return (
+      <div className="main-content">
+        {renderContent()}
+      </div>
+    );
+  }
+
+  // If user is a patient, show the full patient dashboard with patient sidebar
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 md:ml-80 p-6">
-        <PageHeader />
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        <PatientTable patients={filteredPatients} />
-        <Pagination />
-      </main>
+    <div className="app-container">
+      <div className="main-content">
+        {renderContent()}
+      </div>
     </div>
   );
-}
+};
 
 export default PatientDashboard;

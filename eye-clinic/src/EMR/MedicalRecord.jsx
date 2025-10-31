@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"; // ✅ هنستخدمها لجلب اسم المريض من URL
 import { Box, Tabs, Tab } from "@mui/material";
 import PatientInfo from "./PatientInfo";
 import EyeExaminationForm from "./EyeExaminationForm";
@@ -11,20 +10,16 @@ import PastImageTests from "./PastImage-Tests";
 import Operations from "./Operations";
 import DiagnosesTab from "./Diagnoses";
 
-const MedicalRecord = () => {
-  const location = useLocation(); 
-  const queryParams = new URLSearchParams(location.search);
-  const patientNameFromURL = queryParams.get("patient") || ""; // ✅ جلب اسم المريض من query string
-
+const MedicalRecord = ({ patientName, patientId }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   // State لكل تاب
   const [patientData, setPatientData] = useState({
-    name: patientNameFromURL, // ✅ نحط اسم المريض هنا مباشرة
+    name: patientName || "",
     age: "",
     gender: "",
     visitDate: "",
-    patientID: "",
+    patientID: patientId || "", // ✅ Use the numeric patient ID
     contactNumber: "",
     insuranceCompany: "",
   });
@@ -54,7 +49,6 @@ const MedicalRecord = () => {
   const [operationsData, setOperationsData] = useState({});
   const [prescriptionsData, setPrescriptionsData] = useState([]);
   const [diagnosesData, setDiagnosesData] = useState([]);
-//   const [adminData, setAdminData] = useState({});
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -69,11 +63,6 @@ const MedicalRecord = () => {
         boxSizing: "border-box",
       }}
     >
-      {/* ✅ نعرض اسم المريض هنا */}
-      <h2 style={{ textAlign: "center", marginBottom: "15px" }}>
-        Eye Medical Record {patientNameFromURL ? `for ${patientNameFromURL}` : ""}
-      </h2>
-
       {/* Patient Info Form */}
       <Box sx={{ mb: 2 }}>
         <PatientInfo patient={patientData} setPatient={setPatientData} />
@@ -103,38 +92,61 @@ const MedicalRecord = () => {
       {/* Tab Panels */}
       <Box sx={{ mt: 5 }}>
         {activeTab === 0 && (
-          <PatientComplaint data={complaintData} setData={setComplaintData} />
+          <PatientComplaint 
+            data={complaintData} 
+            setData={setComplaintData} 
+            patientId={patientId}
+          />
         )}
         {activeTab === 1 && (
           <MedicalHistory
             data={historyData}
             setData={setHistoryData}
-            patientName={patientNameFromURL} // ✅ نبعت اسم المريض هنا
+            patientName={patientName}
+            patientId={patientId}
           />
         )}
         {activeTab === 2 && (
           <Investigations
             data={investigationsData}
             setData={setInvestigationsData}
+            patientId={patientId}
           />
         )}
         {activeTab === 3 && (
-          <EyeExaminationForm data={eyeExamData} setData={setEyeExamData} />
+          <EyeExaminationForm 
+            data={eyeExamData} 
+            setData={setEyeExamData} 
+            patientId={patientId}
+          />
         )}
         {activeTab === 4 && (
-          <PastImageTests files={pastImagesData} setFiles={setPastImagesData} />
+          <PastImageTests 
+            files={pastImagesData} 
+            setFiles={setPastImagesData} 
+            patientId={patientId}
+          />
         )}
         {activeTab === 5 && (
-          <Operations data={operationsData} setData={setOperationsData} />
+          <Operations 
+            data={operationsData} 
+            setData={setOperationsData} 
+            patientId={patientId}
+          />
         )}
         {activeTab === 6 && (
           <PrescriptionForm
             data={prescriptionsData}
             setData={setPrescriptionsData}
+            patientId={patientId}
           />
         )}
         {activeTab === 7 && (
-          <DiagnosesTab data={diagnosesData} setData={setDiagnosesData} />
+          <DiagnosesTab 
+            data={diagnosesData} 
+            setData={setDiagnosesData} 
+            patientId={patientId}
+          />
         )}
       </Box>
     </Box>
