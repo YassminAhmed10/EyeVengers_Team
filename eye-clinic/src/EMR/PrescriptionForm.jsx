@@ -1,5 +1,4 @@
 import React from "react";
-import ClearButton from "./ClearButton"; // استيراد الكومبوننت
 import {
   Box,
   TextField,
@@ -22,6 +21,7 @@ const mockDrugs = [
 ];
 
 const drugForms = ["Tablet", "Drop", "Syrup", "Cream", "Injection"];
+const doseOptions = ["1", "2", "3", "5", "10", "15", "20", "Other"];
 const frequencies = [
   "Once daily",
   "Twice daily",
@@ -42,7 +42,15 @@ const PrescriptionForm = ({ data, setData }) => {
   const addPrescription = () => {
     setData([
       ...data,
-      { drug: "", form: "", dose: "", frequency: "", customFrequency: "", notes: "" },
+      {
+        drug: "",
+        form: "",
+        dose: "",
+        customDose: "",
+        frequency: "",
+        customFrequency: "",
+        notes: "",
+      },
     ]);
   };
 
@@ -52,20 +60,9 @@ const PrescriptionForm = ({ data, setData }) => {
 
   return (
     <Box sx={{ mt: 3, width: "100%" }}>
-      {/* Header مع زر ClearButton */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-          Prescription Details
-        </Typography>
-        <ClearButton
-          label="Clear Prescriptions"
-          onClear={() =>
-            setData([
-              { drug: "", form: "", dose: "", frequency: "", customFrequency: "", notes: "" },
-            ])
-          }
-        />
-      </Box>
+      <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+        Prescription Details
+      </Typography>
 
       {data.map((item, index) => (
         <Grid
@@ -81,7 +78,7 @@ const PrescriptionForm = ({ data, setData }) => {
             backgroundColor: "#fff",
           }}
         >
-          {/* Drug Name */}
+          
           <Grid item xs={12} sm={6}>
             <Autocomplete
               freeSolo
@@ -105,7 +102,7 @@ const PrescriptionForm = ({ data, setData }) => {
             />
           </Grid>
 
-          {/* Form */}
+          
           <Grid item xs={12} sm={2}>
             <TextField
               select
@@ -114,6 +111,9 @@ const PrescriptionForm = ({ data, setData }) => {
               fullWidth
               value={item.form}
               onChange={(e) => handleChange(index, "form", e.target.value)}
+              InputLabelProps={{
+                shrink: true, 
+              }}
             >
               {drugForms.map((form) => (
                 <MenuItem key={form} value={form}>
@@ -123,19 +123,42 @@ const PrescriptionForm = ({ data, setData }) => {
             </TextField>
           </Grid>
 
-          {/* Dose */}
+          
           <Grid item xs={12} sm={2}>
             <TextField
+              select
               label="Dose"
               variant="outlined"
               fullWidth
               value={item.dose}
               onChange={(e) => handleChange(index, "dose", e.target.value)}
-              placeholder="e.g., 1 tablet / 5 ml"
-            />
+              InputLabelProps={{
+                shrink: true, 
+              }}
+            >
+              {doseOptions.map((dose) => (
+                <MenuItem key={dose} value={dose}>
+                  {dose}
+                </MenuItem>
+              ))}
+            </TextField>
+
+            {item.dose === "Other" && (
+              <TextField
+                label="Custom Dose"
+                variant="outlined"
+                fullWidth
+                sx={{ mt: 1 }}
+                value={item.customDose}
+                onChange={(e) =>
+                  handleChange(index, "customDose", e.target.value)
+                }
+                placeholder="Enter custom dose (e.g., 2.5 tablet, 7 ml)"
+              />
+            )}
           </Grid>
 
-          {/* Frequency */}
+          
           <Grid item xs={12} sm={2}>
             <TextField
               select
@@ -144,6 +167,9 @@ const PrescriptionForm = ({ data, setData }) => {
               fullWidth
               value={item.frequency}
               onChange={(e) => handleChange(index, "frequency", e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
             >
               {frequencies.map((freq) => (
                 <MenuItem key={freq} value={freq}>
@@ -167,7 +193,7 @@ const PrescriptionForm = ({ data, setData }) => {
             )}
           </Grid>
 
-          {/* Delete Button */}
+         
           <Grid
             item
             xs={12}
@@ -183,7 +209,7 @@ const PrescriptionForm = ({ data, setData }) => {
             </IconButton>
           </Grid>
 
-          {/* Notes */}
+         
           <Grid item xs={12}>
             <TextField
               label="Notes"

@@ -34,7 +34,7 @@ const Operations = () => {
         🏥 Operation Details
       </Typography>
 
-      {/* Tabs */}
+      
       <Tabs value={activeTab} onChange={handleTabChange} centered sx={{ mb: 2 }}>
         <Tab label="Basic Info" />
         <Tab label="Pre-Op" />
@@ -42,7 +42,7 @@ const Operations = () => {
         <Tab label="Status & Surgery Info" />
       </Tabs>
 
-      {/* Tab Panels */}
+      
       {activeTab === 0 && (
         <Box sx={{ p: 2, border: "1px solid #ddd", borderRadius: 2 }}>
           <Grid container spacing={2}>

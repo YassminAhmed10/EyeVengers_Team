@@ -7,6 +7,8 @@ import "./Appointments.css";
 export default function AppointmentsPage() {
   const [activeTab, setActiveTab] = useState("book");
   const [userRole, setUserRole] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [age, setAge] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,6 +23,27 @@ export default function AppointmentsPage() {
     setUserRole(role);
   }, [navigate]);
 
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+    
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+    
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      calculatedAge--;
+    }
+    
+    return calculatedAge.toString();
+  };
+
+  const handleDateOfBirthChange = (e) => {
+    const dob = e.target.value;
+    setDateOfBirth(dob);
+    setAge(calculateAge(dob));
+  };
+
   const renderSidebar = () => {
     if (userRole === "Receptionist") {
       return <ReceptionistSidebar />;
@@ -30,7 +53,6 @@ export default function AppointmentsPage() {
     return null;
   };
 
-  // Determine if this is a doctor route
   const isDoctorRoute = location.pathname.startsWith('/doctor');
 
   if (!userRole) {
@@ -46,7 +68,7 @@ export default function AppointmentsPage() {
           <div className="header-main">
             <div className="header-titles">
               <h1>
-                {isDoctorRoute ? "Doctor Appointments" : "Appointment Management"}
+                {isDoctorRoute ? "Appointments" : "Appointment Management"}
               </h1>
               <p>
                 {isDoctorRoute 
@@ -134,12 +156,36 @@ export default function AppointmentsPage() {
                           className="form-input"
                         />
                       </div>
+
+                      <div className="form-group">
+                        <label>Date of Birth</label>
+                        <input 
+                          type="date" 
+                          className="form-input"
+                          value={dateOfBirth}
+                          onChange={handleDateOfBirthChange}
+                          max={new Date().toISOString().split('T')[0]} // Prevent future dates
+                        />
+                      </div>
+                      
+                      <div className="form-group">
+                        <label>Age</label>
+                        <input 
+                          type="text" 
+                          placeholder="Auto-calculated"
+                          className="form-input"
+                          value={age}
+                          readOnly
+                          style={{ backgroundColor: '#f8fafc', color: '#64748b' }}
+                        />
+                      </div>
                       
                       <div className="form-group">
                         <label>Appointment Date</label>
                         <input 
                           type="date" 
                           className="form-input"
+                          min={new Date().toISOString().split('T')[0]} // Prevent past dates
                         />
                       </div>
                       
@@ -147,9 +193,25 @@ export default function AppointmentsPage() {
                         <label>Preferred Time</label>
                         <select className="form-input">
                           <option value="">Select a time slot</option>
+                          <option value="08:00">08:00 AM</option>
+                          <option value="08:30">08:30 AM</option>
                           <option value="09:00">09:00 AM</option>
+                          <option value="09:30">09:30 AM</option>
                           <option value="10:00">10:00 AM</option>
+                          <option value="10:30">10:30 AM</option>
                           <option value="11:00">11:00 AM</option>
+                          <option value="11:30">11:30 AM</option>
+                          <option value="12:00">12:00 PM</option>
+                          <option value="12:30">12:30 PM</option>
+                          <option value="13:00">01:00 PM</option>
+                          <option value="13:30">01:30 PM</option>
+                          <option value="14:00">02:00 PM</option>
+                          <option value="14:30">02:30 PM</option>
+                          <option value="15:00">03:00 PM</option>
+                          <option value="15:30">03:30 PM</option>
+                          <option value="16:00">04:00 PM</option>
+                          <option value="16:30">04:30 PM</option>
+                          <option value="17:00">05:00 PM</option>
                         </select>
                       </div>
                       
@@ -157,9 +219,35 @@ export default function AppointmentsPage() {
                         <label>Appointment Type</label>
                         <select className="form-input">
                           <option value="">Select type</option>
-                          <option value="checkup">Routine Checkup</option>
+                          <option value="routine-checkup">Routine Checkup</option>
                           <option value="consultation">Consultation</option>
+                          <option value="follow-up">Follow-up Visit</option>
+                          <option value="emergency">Emergency</option>
+                          <option value="surgery">Surgery</option>
+                          <option value="test-procedure">Test/Procedure</option>
+                          <option value="vaccination">Vaccination</option>
+                          <option value="other">Other</option>
                         </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Gender</label>
+                        <select className="form-input">
+                          <option value="">Select gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                          <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Insurance Provider</label>
+                        <input 
+                          type="text" 
+                          placeholder="Insurance company name" 
+                          className="form-input"
+                        />
                       </div>
                       
                       <div className="form-group full-width">
@@ -168,6 +256,15 @@ export default function AppointmentsPage() {
                           placeholder="Please describe the reason for the appointment in detail..." 
                           className="form-textarea"
                           rows="4"
+                        />
+                      </div>
+
+                      <div className="form-group full-width">
+                        <label>Medical History Notes</label>
+                        <textarea 
+                          placeholder="Any relevant medical history, allergies, or current medications..." 
+                          className="form-textarea"
+                          rows="3"
                         />
                       </div>
                     </div>
@@ -191,13 +288,47 @@ export default function AppointmentsPage() {
                     <p>View and manage all scheduled appointments</p>
                   </div>
 
+                  <div className="management-controls">
+                    <div className="search-filter-section">
+                      <div className="search-box">
+                        <span className="material-symbols-outlined">search</span>
+                        <input 
+                          type="text" 
+                          placeholder="Search patients, appointments..." 
+                          className="search-input"
+                        />
+                      </div>
+                      <div className="filter-controls">
+                        <select className="filter-select">
+                          <option value="">All Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancelled">Cancelled</option>
+                        </select>
+                        <select className="filter-select">
+                          <option value="">All Types</option>
+                          <option value="checkup">Routine Checkup</option>
+                          <option value="consultation">Consultation</option>
+                          <option value="follow-up">Follow-up</option>
+                        </select>
+                        <input 
+                          type="date" 
+                          className="filter-select"
+                          placeholder="Filter by date"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="table-container">
                     <table className="appointments-table">
                       <thead>
                         <tr>
                           <th>Patient Name</th>
+                          <th>Age</th>
                           <th>Contact Info</th>
-                          <th>Date</th>
+                          <th>Appointment Date</th>
                           <th>Time</th>
                           <th>Type</th>
                           <th>Status</th>
@@ -206,25 +337,99 @@ export default function AppointmentsPage() {
                       </thead>
                       <tbody>
                         <tr>
-                          <td>John Doe</td>
-                          <td>+20 111 222 333</td>
+                          <td>
+                            <div className="patient-info">
+                              <span className="patient-name">Yassmin Ahmed</span>
+                              <span className="patient-id">ID: 1001</span>
+                            </div>
+                          </td>
+                          <td>20</td>
+                          <td>
+                            <div className="contact-info">
+                              <span>+010 13327001</span>
+                              <span>Y.ahmed2354@nu.edu</span>
+                            </div>
+                          </td>
                           <td>Nov 2, 2025</td>
                           <td>10:00 AM</td>
-                          <td>Consultation</td>
-                          <td>Pending</td>
+                          <td>
+                            <span className="appointment-type consultation">Consultation</span>
+                          </td>
+                          <td>
+                            <span className="status-badge pending">Pending</span>
+                          </td>
                           <td>
                             <div className="action-buttons">
-                              <button className="action-btn view-btn">
+                              <button className="action-btn view-btn" title="View Details">
                                 <span className="material-symbols-outlined">visibility</span>
                               </button>
-                              <button className="action-btn edit-btn">
+                              <button className="action-btn edit-btn" title="Edit Appointment">
                                 <span className="material-symbols-outlined">edit</span>
+                              </button>
+                              <button className="action-btn confirm-btn" title="Confirm Appointment">
+                                <span className="material-symbols-outlined">check_circle</span>
+                              </button>
+                              <button className="action-btn cancel-btn" title="Cancel Appointment">
+                                <span className="material-symbols-outlined">cancel</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="patient-info">
+                              <span className="patient-name">Sarah Mostfa</span>
+                              <span className="patient-id">ID: 1002</span>
+                            </div>
+                          </td>
+                          <td>40</td>
+                          <td>
+                            <div className="contact-info">
+                              <span>+012 81662269</span>
+                              <span>s.mostfa2365@nu.edu.eg</span>
+                            </div>
+                          </td>
+                          <td>Nov 3, 2025</td>
+                          <td>02:30 PM</td>
+                          <td>
+                            <span className="appointment-type checkup">Routine Checkup</span>
+                          </td>
+                          <td>
+                            <span className="status-badge confirmed">Confirmed</span>
+                          </td>
+                          <td>
+                            <div className="action-buttons">
+                              <button className="action-btn view-btn" title="View Details">
+                                <span className="material-symbols-outlined">visibility</span>
+                              </button>
+                              <button className="action-btn edit-btn" title="Edit Appointment">
+                                <span className="material-symbols-outlined">edit</span>
+                              </button>
+                              <button className="action-btn complete-btn" title="Mark Complete">
+                                <span className="material-symbols-outlined">done_all</span>
                               </button>
                             </div>
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+
+                  <div className="table-pagination">
+                    <div className="pagination-info">
+                      Showing 1-2 of 12 appointments
+                    </div>
+                    <div className="pagination-controls">
+                      <button className="pagination-btn" disabled>
+                        <span className="material-symbols-outlined">chevron_left</span>
+                      </button>
+                      <button className="pagination-btn active">1</button>
+                      <button className="pagination-btn">2</button>
+                      <button className="pagination-btn">3</button>
+                      <button className="pagination-btn">
+                        <span className="material-symbols-outlined">chevron_right</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

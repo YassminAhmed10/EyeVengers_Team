@@ -1,137 +1,118 @@
-/* ===========================
-   Doctor Sidebar Styles
-=========================== */
+
 .doctor-sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #3459c0 0%, #0c44a0 100%);
-  color: white;
+  background: #3a57f8;
+  color: rgb(5, 1, 1);
   display: flex;
   flex-direction: column;
   padding: 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 0 10px rgba(68, 1, 255, 0.1);
   position: fixed;
   height: 100vh;
   z-index: 1000;
   overflow: hidden;
 }
 
-/* Header Section */
 .sidebar-header {
   padding: 2rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  background: rgba(0, 0, 0, 0.1);
+  gap: 1rem;
 }
 
-/* Clinic Logo */
+
 .clinic-logo {
   width: 90px;
   height: 90px;
-  border-radius: 50%;
+  border-radius: 90%;
   overflow: hidden;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 3px solid #3b82f6;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
   transition: all 0.3s ease;
 }
 
 .clinic-logo:hover {
   transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
 .clinic-logo-img {
-  width: 85%;
-  height: 85%;
+  width: 95%;
+  height: 95%;
   object-fit: contain;
   border-radius: 50%;
 }
 
-/* Doctor Profile in Header */
+
 .doctor-profile-header {
   text-align: center;
 }
 
 .doctor-profile-header h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #ffffff;
 }
 
 .doctor-profile-header p {
-  font-size: 0.95rem;
-  opacity: 0.9;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.875rem;
+  color: #94a3b8;
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
-/* Navigation */
+
 .sidebar-nav {
   flex: 1;
-  padding: 1.5rem 0;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow-y: auto;
 }
 
-.nav-item {
+.doctor-sidebar .sidebar-nav .nav-item {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 1.5rem;
-  color: rgba(255, 255, 255, 0.85);
+  padding: 0.875rem 1rem;
+  color: #ffffff;
   text-decoration: none;
-  transition: all 0.3s ease;
-  border-left: 4px solid transparent;
-  margin: 0 0.5rem;
-  border-radius: 8px;
+  transition: all 0.2s ease;
+  border-radius: 12px;
   position: relative;
-  overflow: hidden;
-}
-
-.nav-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease;
-}
-
-.nav-item:hover::before {
-  left: 100%;
+  cursor: pointer;
+  background-color: #2563eb;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  transform: translateX(5px);
+  background: rgba(201, 222, 255, 0.1);
+  color: #3b82f6;
 }
 
 .nav-item.active {
-  background: rgba(255, 255, 255, 0.18);
-  color: white;
-  border-left-color: #263ce6;
-  box-shadow: 0 4px 12px rgba(29, 102, 220, 0.3);
+  background: #0aff22;
+  color: rgb(255, 248, 248);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.nav-item.active .nav-icon {
+  color: rgb(255, 255, 255);
 }
 
 .nav-icon {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   width: 24px;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .nav-item:hover .nav-icon {
@@ -139,116 +120,116 @@
 }
 
 .nav-label {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-size: 0.938rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
-/* Logout Button - Red Color at Bottom of Navigation */
+
+.nav-badge {
+  margin-left: auto;
+  background: #f63b3b;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.nav-item.active .nav-badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
 .logout-button {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.2rem 1.5rem;
-  color: #ffffff !important;
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  padding: 0.875rem 1rem;
+  color: #94a3b8 !important;
+  background: transparent !important;
   text-decoration: none;
-  transition: all 0.3s ease;
-  border-left: 4px solid #991b1b !important;
-  margin: 2rem 0.5rem 1rem 0.5rem !important;
+  transition: all 0.2s ease;
+  border-radius: 12px;
   margin-top: auto !important;
   cursor: pointer;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.logout-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.6s ease;
-}
-
-.logout-button:hover::before {
-  left: 100%;
+  border: none;
 }
 
 .logout-button:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
 }
 
-.logout-button:active {
-  transform: translateY(0);
+.logout-button:hover .nav-icon {
+  color: #ef4444;
 }
 
 .logout-button .nav-icon {
-  color: #ffffff !important;
-  font-size: 1.4rem;
+  color: #94a3b8;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
 }
 
 .logout-button .nav-label {
-  color: #ffffff !important;
-  font-weight: 700;
-  font-size: 1.05rem;
+  color: inherit;
+  font-weight: 500;
+  font-size: 0.938rem;
 }
 
-/* User Profile Section */
+
 .user-profile {
-  padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  gap: 0.875rem;
 }
 
 .user-avatar {
-  width: 52px;
-  height: 52px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  flex-shrink: 0;
 }
 
 .user-avatar .material-symbols-outlined {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: white;
 }
 
 .user-info {
   flex: 1;
+  min-width: 0;
 }
 
 .user-info h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
-  color: white;
+  font-size: 0.938rem;
+  font-weight: 600;
+  margin-bottom: 0.125rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-info p {
-  font-size: 0.88rem;
-  opacity: 0.9;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 500;
+  font-size: 0.813rem;
+  color: #94a3b8;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ===========================
-   Responsive Design for Sidebar
-=========================== */
+
 @media (max-width: 1024px) {
   .doctor-sidebar {
     width: 260px;
@@ -260,7 +241,6 @@
     width: 100%;
     height: auto;
     position: relative;
-    border-radius: 0 0 20px 20px;
   }
   
   .sidebar-nav {
@@ -272,24 +252,24 @@
   
   .nav-item {
     flex-direction: column;
-    min-width: 100px;
-    border-left: none;
-    border-bottom: 3px solid transparent;
+    min-width: 90px;
     text-align: center;
     padding: 0.75rem 0.5rem;
-    margin: 0;
+    gap: 0.5rem;
   }
   
-  .nav-item.active {
-    border-left: none;
-    border-bottom-color: #10b981;
+  .nav-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    margin-left: 0;
   }
 
   .logout-button {
-    margin: 0 0.25rem !important;
-    min-width: 100px;
-    border-left: none !important;
-    border-bottom: 3px solid #991b1b !important;
+    margin: 0 !important;
+    min-width: 90px;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .user-profile {
@@ -309,20 +289,20 @@
   }
 
   .clinic-logo {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .doctor-profile-header h1 {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .doctor-profile-header p {
-    font-size: 0.85rem;
+    font-size: 0.813rem;
   }
   
   .nav-label {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
   
   .user-profile {
@@ -330,6 +310,47 @@
   }
 
   .logout-button {
-    padding: 1rem;
+    padding: 0.875rem 0.5rem;
   }
+}
+
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+
+
+
+.user-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+
+
 }

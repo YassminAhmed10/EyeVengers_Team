@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <aside className="w-80 bg-brand text-white flex flex-col fixed h-full">
-      {/* Clinic Logo & Doctor Name */}
       <div className="p-6 flex items-center gap-3">
         <img 
           className="w-14 h-14 rounded-full object-cover border-2 border-white"
@@ -17,7 +16,6 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Navigation Menu */}
       <nav className="flex-1 px-6 py-4 flex flex-col gap-4">
         <NavLink 
           to="/" 
@@ -70,7 +68,6 @@ const Sidebar = () => {
         </NavLink>
       </nav>
 
-      {/* Settings & Profile */}
       <div className="p-4 border-t border-white/20">
         <NavLink 
           to="/settings" 

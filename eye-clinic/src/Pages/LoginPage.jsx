@@ -1,6 +1,6 @@
 // src/Pages/LoginPage.jsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,18 +27,15 @@ export default function LoginPage() {
     } else if (role === "Receptionist") {
       navigate("/appointments");
     } else if (role === "Patient") {
-      navigate("/patient");
+      navigate("/about-us");
     }
   };
 
   return (
     <div style={styles.container}>
-      {/* Background Image */}
       <div style={styles.background}></div>
       
-      {/* Main Content */}
       <div style={styles.mainContent}>
-        {/* Left Side - Branding */}
         <div style={styles.brandSection}>
           <div style={styles.logo}>
             <img 
@@ -46,15 +43,19 @@ export default function LoginPage() {
               alt="Dr Mohab Khairy" 
               style={styles.logoImage}
               onError={(e) => {
-                // Fallback to text if logo doesn't exist
-                // e.target.style.display = 'none';
-                // e.target.parentNode.innerHTML = '<div style="' + styles.logoFallback + '"></div><h1 style="' + styles.clinicName + '">Dr Mohab Khairy </h1>';
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
               }}
             />
-            <h1 style={styles.clinicName}>Dr Mohab Khairy </h1>
+            <div style={styles.logoFallback}>
+              <span className="material-symbols-outlined" style={{fontSize: '2.5rem'}}>
+                local_hospital
+              </span>
+            </div>
+            <h1 style={styles.clinicName}>Dr Mohab Khairy</h1>
           </div>
           <div style={styles.brandContent}>
-            <h2 style={styles.welcomeText}>Welcome to Our Eye Clinic</h2>
+            <h2 style={styles.welcomeText}>Welcome to Dr Mohab Khairy Eye     Clinic</h2>
             <p style={styles.subtitle}>
               Advanced eye care management system for doctors, staff, and patients
             </p>
@@ -69,7 +70,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right Side - Login Form */}
         <div style={styles.loginSection}>
           <div style={styles.loginCard}>
             <div style={styles.loginHeader}>
@@ -77,7 +77,6 @@ export default function LoginPage() {
               <p style={styles.loginSubtitle}>Access your account</p>
             </div>
 
-            {/* Role Selection */}
             <div style={styles.roleGrid}>
               {["Doctor", "Receptionist", "Patient"].map((r) => (
                 <div
@@ -94,7 +93,6 @@ export default function LoginPage() {
                       alt={r}
                       style={styles.roleImage}
                       onError={(e) => {
-                        // Fallback to emoji if image doesn't exist
                         e.target.style.display = 'none';
                         const emoji = r === "Doctor" ? "" : r === "Receptionist" ? "" : "";
                         e.target.nextSibling.textContent = emoji;
@@ -107,7 +105,6 @@ export default function LoginPage() {
               ))}
             </div>
 
-            {/* Login Form */}
             <div style={styles.formGroup}>
               <label style={styles.label}>Email Address</label>
               <input
@@ -138,10 +135,17 @@ export default function LoginPage() {
               <span style={styles.buttonIcon}>→</span>
             </button>
 
+            <div style={styles.signUpSection}>
+              <p style={styles.signUpText}>
+                Don't have an account?{" "}
+                <Link to="/signup" style={styles.signUpLink}>
+                  Create one now
+                </Link>
+              </p>
+            </div>
+
             <div style={styles.footer}>
               <p style={styles.footerText}>
-                Having trouble signing in?{" "}
-                <a href="#" style={styles.footerLink}>Contact Support</a>
               </p>
             </div>
           </div>
@@ -189,7 +193,7 @@ const styles = {
   },
   brandSection: {
     flex: 1,
-    background: "linear-gradient(135deg, #2563eb 0%, #2563eb 100%)",
+    background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
     color: "white",
     padding: "60px",
     display: "flex",
@@ -203,10 +207,10 @@ const styles = {
     marginBottom: "40px",
   },
   logoImage: {
-    width: "80px", // Bigger logo
-    height: "80px", // Bigger logo
+    width: "80px",
+    height: "80px",
     objectFit: "cover",
-    borderRadius: "50%", // Circular shape
+    borderRadius: "50%",
     border: "3px solid white",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
   },
@@ -215,14 +219,13 @@ const styles = {
     height: "80px",
     borderRadius: "50%",
     backgroundColor: "rgba(255, 255, 255, 0.2)",
-    display: "flex",
+    display: "none",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: "2.5rem",
     border: "3px solid white",
   },
   clinicName: {
-    fontSize: "2rem", // Bigger font size
+    fontSize: "2rem",
     fontWeight: "700",
     margin: 0,
   },
@@ -257,9 +260,9 @@ const styles = {
     opacity: 0.9,
   },
   featureIcon: {
+    fontSize: "1.25rem",
     width: "24px",
-    height: "24px",
-    objectFit: "contain",
+    textAlign: "center",
   },
   loginSection: {
     flex: 1,
@@ -316,10 +319,10 @@ const styles = {
     marginBottom: "8px",
   },
   roleImage: {
-    width: "50px", // Bigger role icons
-    height: "50px", // Bigger role icons
+    width: "50px",
+    height: "50px",
     objectFit: "cover",
-    borderRadius: "50%", // Circular shape
+    borderRadius: "50%",
     border: "2px solid #e2e8f0",
   },
   roleFallback: {
@@ -369,6 +372,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: "8px",
+    marginBottom: "8px",
   },
   buttonText: {
     fontSize: "1rem",
@@ -376,8 +380,29 @@ const styles = {
   buttonIcon: {
     fontSize: "1.25rem",
   },
+  signUpSection: {
+    textAlign: "center",
+    padding: "20px 0",
+    margin: "16px 0",
+    borderTop: "1px solid #e2e8f0",
+    borderBottom: "1px solid #e2e8f0",
+  },
+  signUpText: {
+    fontSize: "0.875rem",
+    color: "#64748b",
+    margin: 0,
+  },
+  signUpLink: {
+    color: "#3b82f6",
+    textDecoration: "none",
+    fontWeight: "600",
+    transition: "color 0.2s ease",
+  },
+  signUpLinkHover: {
+    color: "#1d4ed8",
+  },
   footer: {
-    marginTop: "32px",
+    marginTop: "16px",
     textAlign: "center",
   },
   footerText: {

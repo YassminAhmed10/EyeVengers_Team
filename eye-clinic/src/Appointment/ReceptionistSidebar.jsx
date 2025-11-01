@@ -6,16 +6,20 @@ const ReceptionistSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const clinicLogo = "/src/images/logo.png"; 
+  const receptionistName = "Receptionist Name"; 
+  const receptionistImage = "/src/images/Receptionist.png"; 
+
   const handleLogout = () => {
-    // Clear authentication data
+    
     localStorage.removeItem("userRole");
     localStorage.removeItem("isAuthenticated");
     
-    // Navigate to login page
+    
     navigate("/login");
   };
 
-  // Receptionist only has access to these pages
+  
   const navItems = [
     { path: "/appointments", label: "Appointments", icon: "calendar_month" },
     { path: "/receptionist/finance", label: "Finance", icon: "payments" },
@@ -26,10 +30,14 @@ const ReceptionistSidebar = () => {
     <aside className="receptionist-sidebar">
       <div className="sidebar-header">
         <div className="clinic-logo">
-          <span className="material-symbols-outlined">local_hospital</span>
+          {clinicLogo ? (
+            <img src={clinicLogo} alt="Clinic Logo" className="logo-image" />
+          ) : (
+            <span className="material-symbols-outlined">local_hospital</span>
+          )}
         </div>
         <div className="clinic-info">
-          <h1>Royal Medical Center</h1>
+          <h1>Dr Mohab Khairy</h1>
           <p>Receptionist Panel</p>
         </div>
       </div>
@@ -46,7 +54,7 @@ const ReceptionistSidebar = () => {
           </Link>
         ))}
 
-        {/* ✅ Logout Button */}
+        
         <div 
           className="nav-item logout-button"
           onClick={handleLogout}
@@ -58,11 +66,15 @@ const ReceptionistSidebar = () => {
 
       <div className="user-profile">
         <div className="user-avatar">
-          <span className="material-symbols-outlined">person</span>
+          {receptionistImage ? (
+            <img src={receptionistImage} alt={receptionistName} className="avatar-image" />
+          ) : (
+            <span className="material-symbols-outlined">person</span>
+          )}
         </div>
         <div className="user-info">
-          <h3>Receptionist</h3>
-          <p>Front Desk</p>
+          <h3>{receptionistName}</h3>
+          <p>Receptionist</p>
         </div>
       </div>
     </aside>

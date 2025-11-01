@@ -12,7 +12,6 @@
   background-color: #f8fafc;
 }
 
-/* Header Styles */
 .finance-header {
   display: flex;
   justify-content: space-between;
@@ -89,7 +88,6 @@
   background-color: #f3f4f6;
 }
 
-/* Stats Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -142,7 +140,6 @@
   color: #6b7280;
 }
 
-/* Table Styles */
 .table-section {
   background-color: white;
   border-radius: 0.75rem;
@@ -254,7 +251,6 @@
   background-color: #f3f4f6;
 }
 
-/* Insurance Cards */
 .insurance-card {
   background-color: white;
   padding: 1.5rem;
@@ -288,7 +284,6 @@
   margin: 0.25rem 0 0 0;
 }
 
-/* Reports Section */
 .reports-section {
   margin-bottom: 2rem;
 }
@@ -339,7 +334,6 @@
   background-color: #e5e7eb;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
   .finance-main-content {
     margin-left: 250px;

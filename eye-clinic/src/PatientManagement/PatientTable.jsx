@@ -1,69 +1,50 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const PatientTable = ({ patients, userRole }) => {
+function PatientTable({ patients }) {
   const navigate = useNavigate();
 
-  const handleViewPatient = (patientId) => {
-    if (userRole === "Doctor") {
-      navigate(`/doctor/view-medical-record?patient=${encodeURIComponent(patients.find(p => p.id === patientId)?.name || 'Unknown')}`);
-    } else {
-      // Patient viewing their own records
-      console.log("View patient record:", patientId);
-    }
-  };
-
-  const getStatusClass = (status) => {
-    const statusMap = {
-      'Active': 'status-active',
-      'Follow-up': 'status-follow-up',
-      'Post-op': 'status-post-op',
-      'Treatment': 'status-treatment',
-      'Scheduled': 'status-scheduled'
-    };
-    return statusMap[status] || 'status-active';
+  const handleViewRecord = (patient) => {
+    navigate(`/doctor/view-medical-record/${encodeURIComponent(patient.name)}`);
   };
 
   return (
-    <div className="table-container">
-      <table>
-        <thead>
+    <div className="w-full bg-white rounded-2xl shadow-md mt-6 overflow-x-auto">
+      <table className="w-full text-sm text-left text-gray-600">
+        <thead className="bg-blue-100 text-gray-800 uppercase text-xs font-semibold">
           <tr>
-            <th>Patient Name</th>
-            <th>Age</th>
-            <th>Condition</th>
-            <th>Last Visit</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th className="px-6 py-3">Patient Name</th>
+            <th className="px-6 py-3">Phone Number</th>
+            <th className="px-6 py-3">Last Visit</th>
+            <th className="px-6 py-3 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {patients.length > 0 ? (
-            patients.map(patient => (
-              <tr key={patient.id}>
-                <td>{patient.name}</td>
-                <td>{patient.age}</td>
-                <td>{patient.condition}</td>
-                <td>{patient.lastVisit}</td>
-                <td>
-                  <span className={`status-badge ${getStatusClass(patient.status)}`}>
-                    {patient.status}
-                  </span>
-                </td>
-                <td>
-                  <button 
-                    className="btn-view" 
-                    onClick={() => handleViewPatient(patient.id)}
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
+          {patients.map((p, index) => (
+            <tr
+              key={index}
+              className="border-b hover:bg-blue-50 transition-all duration-150"
+            >
+              <td className="px-6 py-4 font-medium text-gray-900">{p.name}</td>
+              <td className="px-6 py-4">{p.phone}</td>
+              <td className="px-6 py-4">{p.date}</td>
+              <td className="px-6 py-4 text-center">
+                <button
+                  onClick={() => handleViewRecord(p)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-all"
+                >
+                  View Record
+                </button>
+              </td>
+            </tr>
+          ))}
+          {patients.length === 0 && (
             <tr>
-              <td colSpan="6" style={{ textAlign: 'center', padding: '2rem' }}>
-                No patients found
+              <td
+                colSpan="4"
+                className="text-center py-6 text-gray-500 italic"
+              >
+                No patients found matching your search.
               </td>
             </tr>
           )}
@@ -71,6 +52,6 @@ const PatientTable = ({ patients, userRole }) => {
       </table>
     </div>
   );
-};
+}
 
 export default PatientTable;

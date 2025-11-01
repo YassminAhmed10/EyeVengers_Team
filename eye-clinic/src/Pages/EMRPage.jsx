@@ -10,11 +10,9 @@ function EMRPage() {
   const location = useLocation();
   const decodedPatientName = decodeURIComponent(patientName || "");
   
-  // Get patient ID from navigation state
   const patientId = location.state?.patientId || "0000";
   const userRole = localStorage.getItem("userRole");
 
-  // If the user is not a doctor, redirect to login or show unauthorized
   if (userRole !== "Doctor") {
     navigate("/login");
     return null;
@@ -25,7 +23,6 @@ function EMRPage() {
       <DoctorSidebar />
       
       <div className="emr-main-content">
-        {/* Header */}
         <header className="emr-header">
           <div className="header-content">
             <h1 className="page-title">Electronic Medical Record</h1>
@@ -52,7 +49,6 @@ function EMRPage() {
           </div>
         </header>
 
-        {/* Patient Info */}
         <section className="patient-banner">
           <div className="patient-avatar-section">
             <div className="patient-avatar">
@@ -83,7 +79,6 @@ function EMRPage() {
           </div>
         </section>
 
-        {/* Main Content */}
         <main className="emr-content-wrapper">
           <MedicalRecord 
             patientName={decodedPatientName} 

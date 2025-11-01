@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Button } from "@mui/material";
 import PatientInfo from "./PatientInfo";
 import EyeExaminationForm from "./EyeExaminationForm";
 import MedicalHistory from "./MedicalHistory";
@@ -10,26 +10,46 @@ import PastImageTests from "./PastImage-Tests";
 import Operations from "./Operations";
 import DiagnosesTab from "./Diagnoses";
 
+const TabPanel = ({ children, onClear }) => (
+  <Box sx={{ position: "relative", mt: 3 }}>
+    <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      <Button
+        variant="outlined"
+        color="error"
+        onClick={() => {
+          if (window.confirm("Are you sure you want to clear this tab's data?")) {
+            onClear();
+          }
+        }}
+      >
+        Clear
+      </Button>
+    </Box>
+    {children}
+  </Box>
+);
+
 const MedicalRecord = ({ patientName, patientId }) => {
   const [activeTab, setActiveTab] = useState(0);
 
-  // State لكل تاب
   const [patientData, setPatientData] = useState({
     name: patientName || "",
     age: "",
     gender: "",
     visitDate: "",
-    patientID: patientId || "", // ✅ Use the numeric patient ID
+    patientID: patientId || "",
     contactNumber: "",
     insuranceCompany: "",
   });
 
   const [complaintData, setComplaintData] = useState({ complaint: "" });
+
   const [historyData, setHistoryData] = useState({
     previousEye: "",
     familyHistory: "",
     allergies: "",
   });
+
   const [eyeExamData, setEyeExamData] = useState({
     rightEye: "",
     leftEye: "",
@@ -44,15 +64,84 @@ const MedicalRecord = ({ patientName, patientId }) => {
     fundusObservation: "",
     otherNotes: "",
   });
+
   const [investigationsData, setInvestigationsData] = useState({});
   const [pastImagesData, setPastImagesData] = useState([]);
   const [operationsData, setOperationsData] = useState({});
-  const [prescriptionsData, setPrescriptionsData] = useState([]);
-  const [diagnosesData, setDiagnosesData] = useState([]);
+  const [prescriptionsData, setPrescriptionsData] = useState([
+    {
+      drug: "",
+      form: "",
+      dose: "",
+      frequency: "",
+      customFrequency: "",
+      notes: "",
+    },
+  ]);
+  const [diagnosesData, setDiagnosesData] = useState([
+    { diagnosis: "", status: "", severity: "", notes: "", checkupDate: "" },
+  ]);
 
   const handleChange = (event, newValue) => {
     setActiveTab(newValue);
   };
+
+  const clearComplaint = () => setComplaintData({ complaint: "" });
+
+  const clearHistory = () =>
+    setHistoryData({
+      previousEye: "",
+      familyHistory: "",
+      allergies: "",
+    });
+
+  const clearEyeExam = () =>
+    setEyeExamData({
+      rightEye: "",
+      leftEye: "",
+      eyePressure: "",
+      pupilReaction: "",
+      pupilReactionOther: "",
+      eyeAlignment: "",
+      eyeAlignmentOther: "",
+      eyeMovements: "",
+      eyeMovementsOther: "",
+      anteriorSegment: "",
+      fundusObservation: "",
+      otherNotes: "",
+    });
+
+  const clearInvestigations = () => setInvestigationsData({});
+  const clearPastImages = () => setPastImagesData([]);
+  const clearOperations = () => setOperationsData({});
+
+  const clearPrescriptions = () =>
+    setPrescriptionsData((prev) =>
+      prev.length > 0
+        ? prev.map(() => ({
+            drug: "",
+            form: "",
+            dose: "",
+            frequency: "",
+            customFrequency: "",
+            notes: "",
+          }))
+        : [
+            {
+              drug: "",
+              form: "",
+              dose: "",
+              frequency: "",
+              customFrequency: "",
+              notes: "",
+            },
+          ]
+    );
+
+  const clearDiagnoses = () =>
+    setDiagnosesData([
+      { diagnosis: "", status: "", severity: "", notes: "", checkupDate: "" },
+    ]);
 
   return (
     <Box
@@ -63,12 +152,10 @@ const MedicalRecord = ({ patientName, patientId }) => {
         boxSizing: "border-box",
       }}
     >
-      {/* Patient Info Form */}
       <Box sx={{ mb: 2 }}>
         <PatientInfo patient={patientData} setPatient={setPatientData} />
       </Box>
 
-      {/* Tabs Section */}
       <Tabs
         value={activeTab}
         onChange={handleChange}
@@ -89,64 +176,86 @@ const MedicalRecord = ({ patientName, patientId }) => {
         <Tab label="Diagnoses" />
       </Tabs>
 
-      {/* Tab Panels */}
       <Box sx={{ mt: 5 }}>
         {activeTab === 0 && (
-          <PatientComplaint 
-            data={complaintData} 
-            setData={setComplaintData} 
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearComplaint}>
+            <PatientComplaint
+              data={complaintData}
+              setData={setComplaintData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 1 && (
-          <MedicalHistory
-            data={historyData}
-            setData={setHistoryData}
-            patientName={patientName}
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearHistory}>
+            <MedicalHistory
+              data={historyData}
+              setData={setHistoryData}
+              patientName={patientName}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 2 && (
-          <Investigations
-            data={investigationsData}
-            setData={setInvestigationsData}
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearInvestigations}>
+            <Investigations
+              data={investigationsData}
+              setData={setInvestigationsData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 3 && (
-          <EyeExaminationForm 
-            data={eyeExamData} 
-            setData={setEyeExamData} 
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearEyeExam}>
+            <EyeExaminationForm
+              data={eyeExamData}
+              setData={setEyeExamData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 4 && (
-          <PastImageTests 
-            files={pastImagesData} 
-            setFiles={setPastImagesData} 
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearPastImages}>
+            <PastImageTests
+              files={pastImagesData}
+              setFiles={setPastImagesData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 5 && (
-          <Operations 
-            data={operationsData} 
-            setData={setOperationsData} 
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearOperations}>
+            <Operations
+              data={operationsData}
+              setData={setOperationsData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 6 && (
-          <PrescriptionForm
-            data={prescriptionsData}
-            setData={setPrescriptionsData}
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearPrescriptions}>
+            <PrescriptionForm
+              data={prescriptionsData}
+              setData={setPrescriptionsData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
+
         {activeTab === 7 && (
-          <DiagnosesTab 
-            data={diagnosesData} 
-            setData={setDiagnosesData} 
-            patientId={patientId}
-          />
+          <TabPanel onClear={clearDiagnoses}>
+            <DiagnosesTab
+              data={diagnosesData}
+              setData={setDiagnosesData}
+              patientId={patientId}
+            />
+          </TabPanel>
         )}
       </Box>
     </Box>

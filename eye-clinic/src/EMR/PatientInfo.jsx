@@ -7,7 +7,7 @@ const PatientInfo = ({ patient, readOnly }) => {
               sx={{
                 p: 1.5,
                 border: "2px solid #ddd",
-                maxWidth: 1500,  // العرض الأقصى للبوكس
+                maxWidth: 1500,  
               }}
             >
       <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>

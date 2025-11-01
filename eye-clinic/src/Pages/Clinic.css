@@ -19,13 +19,11 @@ body {
   color: var(--text-main);
 }
 
-/* App Container with Sidebar */
 .app-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* Clinic Operations Container */
 .clinic-operations-container {
   margin-left: 280px;
   flex: 1;
@@ -33,7 +31,6 @@ body {
   background-color: #f8fafc;
 }
 
-/* Header Styles */
 .operations-header {
   background: white;
   border-bottom: 1px solid #e2e8f0;
@@ -53,7 +50,6 @@ body {
   font-size: 1rem;
 }
 
-/* Navigation Styles */
 .operations-nav {
   display: flex;
   gap: 0.5rem;
@@ -79,13 +75,13 @@ body {
 }
 
 .nav-item:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+  background: #0777e7;
+  border-color: #005ed1;
 }
 
 .nav-item.active {
-  background: #00b4d8;
-  border-color: #00b4d8;
+  background: #0d72ff;
+  border-color: #ffffff;
   color: white;
 }
 
@@ -93,12 +89,10 @@ body {
   font-size: 1.25rem;
 }
 
-/* Main Content */
 .operations-main {
   padding: 2rem;
 }
 
-/* Section Cards */
 .section-card {
   background: white;
   border: 1px solid #e2e8f0;
@@ -115,7 +109,6 @@ body {
   color: #1e293b;
 }
 
-/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -146,7 +139,6 @@ tr:not(:last-child) td {
   background-color: #fffbeb;
 }
 
-/* Reports Grid */
 .report-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -164,7 +156,6 @@ tr:not(:last-child) td {
   color: var(--text-main);
 }
 
-/* Material Icons */
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -173,7 +164,6 @@ tr:not(:last-child) td {
   'opsz' 24
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .clinic-operations-container {
     margin-left: 250px;
