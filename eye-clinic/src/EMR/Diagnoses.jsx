@@ -41,7 +41,7 @@ const DiagnosesTab = ({ data, setData }) => {
             alignItems: "center",
           }}
         >
-          {/* Diagnosis Name */}
+          
           <Grid item xs={12} sm={4}>
             <TextField
               label="Diagnosis"
@@ -54,7 +54,7 @@ const DiagnosesTab = ({ data, setData }) => {
             />
           </Grid>
 
-          {/* Status */}
+         
           <Grid item xs={12} sm={3}>
             <TextField
               select
@@ -96,14 +96,14 @@ const DiagnosesTab = ({ data, setData }) => {
             </TextField>
           </Grid>
 
-          {/* Delete Button */}
+          
           <Grid item xs={12} sm={1} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <IconButton color="error" onClick={() => removeDiagnosis(index)}>
               <Delete />
             </IconButton>
           </Grid>
 
-          {/* Notes */}
+          
           <Grid item xs={12}>
             <TextField
               label="Notes"
@@ -116,7 +116,7 @@ const DiagnosesTab = ({ data, setData }) => {
             />
           </Grid>
 
-          {/* Checkup Date & Time */}
+          
           <Grid item xs={12} sm={6}>
             <TextField
               label="Checkup Date & Time"

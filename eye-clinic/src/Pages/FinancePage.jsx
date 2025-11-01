@@ -8,9 +8,9 @@ const FinancePage = () => {
   const [dateRange, setDateRange] = useState('thisMonth');
   const [searchTerm, setSearchTerm] = useState('');
   const [invoices, setInvoices] = useState([
-    { id: 'RV-001', patient: 'Doha Waleed', doctor: 'Dr. Carter', service: 'Eye Exam', amount: 250, status: 'Paid', payment: 'Visa', date: 'Oct 24, 2023' },
-    { id: 'RV-002', patient: 'Myrna Ahmed', doctor: 'Dr. Adams', service: 'Consultation', amount: 150, status: 'Pending', payment: 'Cash', date: 'Oct 24, 2023' },
-    { id: 'RV-003', patient: 'Yassmin Ahmed', doctor: 'Dr. Carter', service: 'Surgery', amount: 450, status: 'Paid', payment: 'Insurance', date: 'Sep 15, 2023' },
+    { id: 'RV-001', patient: 'Doha Waleed', doctor: 'Dr. Mohab', service: 'Eye Exam', amount: 250, status: 'Paid', payment: 'Cash', date: 'Oct 24, 2023' },
+    { id: 'RV-002', patient: 'Myrna Ahmed', doctor: 'Dr. Mohab', service: 'Consultation', amount: 250, status: 'Paid', payment: 'Cash', date: 'Oct 24, 2023' },
+    { id: 'RV-003', patient: 'Yassmin Ahmed', doctor: 'Dr. Mohab', service: 'Surgery', amount: 4550, status: 'Paid', payment: 'Cash', date: 'Sep 15, 2023' },
   ]);
 
   const [expenses, setExpenses] = useState([
@@ -22,7 +22,6 @@ const FinancePage = () => {
   const navigate = useNavigate();
   const userRole = localStorage.getItem('userRole');
 
-  // بيانات المخططات
   const revenueExpenseData = [
     { month: 'Jan', revenue: 42000, expenses: 18000 },
     { month: 'Feb', revenue: 38000, expenses: 16000 },
@@ -40,23 +39,20 @@ const FinancePage = () => {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
-  // بيانات الأطباء
   const doctorsPayments = [
     { name: 'Dr. Emily Carter', totalRevenue: 45850, commission: 40, payable: 18330 },
     { name: 'Dr. Eva Adams', totalRevenue: 23950, commission: 40, payable: 9580 },
   ];
 
-  // بيانات التأمين
   const insuranceData = [
     { company: 'MediCare', pendingClaims: 12, totalCoverage: 25000 },
     { company: 'HealthPlus', pendingClaims: 8, totalCoverage: 18000 },
     { company: 'Blue Shield', pendingClaims: 5, totalCoverage: 15000 },
   ];
 
-  // دوال المعالجة
   const handleAddInvoice = () => {
     const newInvoice = {
-      id: `RV-${String(invoices.length + 1).padStart(3, '0')}`,
+      id: `RV-{String(invoices.length + 1).padStart(3, '0')}`,
       patient: 'New Patient',
       doctor: 'Dr. Carter',
       service: 'New Service',
@@ -74,7 +70,7 @@ const FinancePage = () => {
 
   const handleAddExpense = () => {
     const newExpense = {
-      id: `EXP-${String(expenses.length + 1).padStart(3, '0')}`,
+      id: `EXP-{String(expenses.length + 1).padStart(3, '0')}`,
       category: 'New Category',
       amount: 1000,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
@@ -100,7 +96,6 @@ const FinancePage = () => {
     window.print();
   };
 
-  // الحسابات الديناميكية
   const totalRevenue = invoices.reduce((sum, invoice) => sum + invoice.amount, 0);
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const netProfit = totalRevenue - totalExpenses;
@@ -125,7 +120,6 @@ const FinancePage = () => {
       {renderSidebar()}
       
       <div className="finance-main-content">
-        {/* الهيدر */}
         <header className="finance-header">
           <div>
             <h1 className="finance-title">Finance Overview</h1>
@@ -133,7 +127,7 @@ const FinancePage = () => {
               {['today', 'thisMonth', 'custom'].map(range => (
                 <button
                   key={range}
-                  className={`date-button ${dateRange === range ? 'active' : ''}`}
+                  className={`date-button {dateRange === range ? 'active' : ''}`}
                   onClick={() => setDateRange(range)}
                 >
                   {range === 'today' ? 'Today' : range === 'thisMonth' ? 'This Month' : 'Custom'}
@@ -162,23 +156,22 @@ const FinancePage = () => {
           </div>
         </header>
 
-        {/* بطاقات الإحصائيات */}
         <section className="stats-grid">
           <div className="stat-card">
             <h3 className="stat-title">Total Revenue</h3>
-            <p className="stat-value">${totalRevenue.toLocaleString()}</p>
+            <p className="stat-value">{totalRevenue.toLocaleString()}</p>
             <span className="stat-change positive">+3.2%</span>
           </div>
           
           <div className="stat-card">
             <h3 className="stat-title">Total Expenses</h3>
-            <p className="stat-value">${totalExpenses.toLocaleString()}</p>
+            <p className="stat-value">{totalExpenses.toLocaleString()}</p>
             <span className="stat-change positive">+2.1%</span>
           </div>
           
           <div className="stat-card">
             <h3 className="stat-title">Net Profit</h3>
-            <p className="stat-value">${netProfit.toLocaleString()}</p>
+            <p className="stat-value">{netProfit.toLocaleString()}</p>
             <span className="stat-change positive">+8.3%</span>
           </div>
           
@@ -188,14 +181,8 @@ const FinancePage = () => {
             <span className="stat-change negative">-10%</span>
           </div>
           
-          <div className="stat-card">
-            <h3 className="stat-title">Top-Earning Doctor</h3>
-            <p className="stat-value">Dr. Emily Carter</p>
-            <span className="stat-change neutral">$45,850</span>
-          </div>
         </section>
 
-        {/* جدول الفواتير */}
         <section className="table-section">
           <div className="table-header">
             <div>
@@ -230,9 +217,9 @@ const FinancePage = () => {
                     <td>{invoice.patient}</td>
                     <td>{invoice.doctor}</td>
                     <td>{invoice.service}</td>
-                    <td>${invoice.amount}</td>
+                    <td>{invoice.amount}</td>
                     <td>
-                      <span className={`status-badge ${invoice.status === 'Paid' ? 'paid' : 'pending'}`}>
+                      <span className={`status-badge {invoice.status === 'Paid' ? 'paid' : 'pending'}`}>
                         {invoice.status}
                       </span>
                     </td>
@@ -262,7 +249,6 @@ const FinancePage = () => {
           </div>
         </section>
 
-        {/* جدول المصروفات */}
         <section className="table-section">
           <div className="table-header">
             <div>
@@ -293,7 +279,7 @@ const FinancePage = () => {
                   <tr key={expense.id}>
                     <td>{expense.id}</td>
                     <td>{expense.category}</td>
-                    <td>${expense.amount}</td>
+                    <td>{expense.amount}</td>
                     <td>{expense.date}</td>
                     <td>{expense.addedBy}</td>
                     <td>{expense.notes}</td>
@@ -321,40 +307,6 @@ const FinancePage = () => {
           </div>
         </section>
 
-        {/* مدفوعات الأطباء */}
-        <section className="table-section">
-          <div className="table-header">
-            <div>
-              <h3 className="table-title">Doctor's Payments</h3>
-              <p className="table-subtitle">Overview of commissions and payable amounts</p>
-            </div>
-          </div>
-          
-          <div className="table-container">
-            <table className="finance-table">
-              <thead>
-                <tr>
-                  <th>Doctor Name</th>
-                  <th>Total Revenue</th>
-                  <th>Commission %</th>
-                  <th>Payable Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {doctorsPayments.map(doctor => (
-                  <tr key={doctor.name}>
-                    <td>{doctor.name}</td>
-                    <td>${doctor.totalRevenue.toLocaleString()}</td>
-                    <td>{doctor.commission}%</td>
-                    <td>${doctor.payable.toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* قسم التأمين */}
         <section className="stats-grid">
           {insuranceData.map(insurance => (
             <div key={insurance.company} className="insurance-card">
@@ -366,14 +318,13 @@ const FinancePage = () => {
                 </div>
                 <div>
                   <p className="insurance-label">Total Coverage</p>
-                  <p className="insurance-value">${insurance.totalCoverage.toLocaleString()}</p>
+                  <p className="insurance-value">{insurance.totalCoverage.toLocaleString()}</p>
                 </div>
               </div>
             </div>
           ))}
         </section>
 
-        {/* قسم التقارير والتصدير */}
         <section className="reports-section">
           <div className="reports-card">
             <h3 className="reports-title">Reports & Export</h3>

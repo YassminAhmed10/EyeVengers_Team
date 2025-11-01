@@ -9,19 +9,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
-/* ===== HEADER ===== */
-.page-header {
-  background-color: #00b4d8;
+.emr-header {
+  background: white;
   color: white;
   padding: 1rem 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .header-content {
@@ -30,9 +28,10 @@
 }
 
 .page-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 600;
   margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .header-actions {
@@ -49,33 +48,40 @@
   font-size: 0.9rem;
   border: none;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.3s ease;
   font-weight: 500;
 }
 
 .action-button.primary {
   background-color: white;
-  color: #00b4d8;
+  color: #1411db;
 }
 
 .action-button.primary:hover {
-  background-color: #f0f0f0;
+  background-color: #e6f7fb;
 }
 
-.action-button.secondary {
-  background-color: rgba(255, 255, 255, 0.2);
+.action-button.secondary.print-button {
+  background-color: white;
+  color: red;
+  border: 1px solid red;   
+}
+
+.action-button.secondary.print-button:hover {
+  background-color: red;
   color: white;
 }
 
-.action-button.secondary:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+.print-button .material-symbols-outlined {
+  color: red;
 }
 
-.action-button .material-symbols-outlined {
-  font-size: 20px;
+.print-button:hover .material-symbols-outlined {
+  color: white;
 }
 
-/* ===== PATIENT BANNER ===== */
+
+
 .patient-banner {
   display: flex;
   flex-wrap: wrap;
@@ -101,19 +107,6 @@
   border-radius: 50%;
   font-size: 1.8rem;
   color: #00b4d8;
-  width: 70px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.patient-photo {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #00b4d8;
 }
 
 .patient-display-name {
@@ -158,8 +151,7 @@
   font-size: 0.95rem;
 }
 
-/* ===== MAIN CONTENT ===== */
-.content-wrapper {
+.emr-content-wrapper {
   flex-grow: 1;
   background: #fff;
   margin: 0 2.5rem 1.5rem 2.5rem;
@@ -168,153 +160,18 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* ===== FOOTER ===== */
-.page-footer {
-  background-color: #00b4d8;
-  color: white;
-  text-align: center;
-  padding: 1rem 2rem;
-  font-size: 0.85rem;
-}
-
-.footer-text {
-  margin: 0 0 5px 0;
-}
-
-.footer-links {
-  margin-top: 5px;
-}
-
-.footer-links a {
-  color: white;
-  text-decoration: underline;
-  margin: 0 6px;
-}
-
-/* ===== Material UI Styling ===== */
-.MuiTabs-root {
-  background-color: white;
-  border-radius: 8px;
-  padding: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.MuiTab-root {
-  font-weight: 600 !important;
-  font-size: 0.9rem !important;
-  text-transform: none !important;
-  padding: 10px 20px !important;
-  color: #64748b !important;
-  border-radius: 6px !important;
-  min-height: 44px !important;
-}
-
-.MuiTab-root:hover {
-  background-color: #f5f7fa !important;
-  color: #00b4d8 !important;
-}
-
-.Mui-selected {
-  color: white !important;
-  background-color: #00b4d8 !important;
-}
-
-.MuiTabs-indicator {
-  display: none !important;
-}
-
-.MuiBox-root {
-  background-color: white;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
-}
-
-.MuiTextField-root {
-  width: 100%;
-}
-
-.MuiOutlinedInput-root {
-  border-radius: 6px !important;
-}
-
-.MuiButton-root {
-  border-radius: 6px !important;
-  padding: 8px 20px !important;
-  font-weight: 600 !important;
-  font-size: 0.9rem !important;
-  text-transform: none !important;
-  min-height: 40px !important;
-}
-
-.MuiButton-contained {
-  background-color: #00b4d8 !important;
-}
-
-.MuiButton-contained:hover {
-  background-color: #0096c7 !important;
-}
-
-.MuiChip-root {
-  border-radius: 12px !important;
-  font-size: 0.85rem !important;
-  margin: 4px !important;
-  font-weight: 500 !important;
-}
-
-/* ===== MEDIA QUERIES ===== */
-@media print {
-  .page-header,
-  .patient-banner,
-  .footer-links,
-  .page-footer,
-  .MuiTabs-root,
-  .action-button,
-  .header-actions {
-    display: none !important;
-  }
-  
-  .content-wrapper {
-    margin: 0;
-    padding: 20px;
-    box-shadow: none;
-  }
-  
-  .content-wrapper > *:not(:first-child) {
-    display: none !important;
-  }
-  
-  .MuiBox-root:not(:first-of-type) {
-    display: none !important;
-  }
-  
-  .MuiTextField-root:not([name="patientName"]):not([name="age"]):not([name="contact"]):not([name="visitDate"]) {
-    display: none !important;
-  }
-  
-  body {
-    background: white;
-  }
-  
-  @page {
-    margin: 1cm;
-  }
-}
-
 @media (max-width: 768px) {
   .emr-main-content {
     margin-left: 0;
   }
-  
-  .page-header {
+
+  .emr-header {
     flex-direction: column;
     gap: 12px;
     padding: 1rem;
     align-items: flex-start;
   }
-  
+
   .header-actions {
     width: 100%;
     justify-content: flex-start;
@@ -327,14 +184,14 @@
     padding: 1rem;
   }
 
-  .content-wrapper {
+  .emr-content-wrapper {
     padding: 1rem;
     margin: 0 1rem 1rem 1rem;
   }
-}
 
-@media (max-width: 1024px) {
-  .emr-main-content {
-    margin-left: 250px;
-  }
+
+
+
+
+  
 }

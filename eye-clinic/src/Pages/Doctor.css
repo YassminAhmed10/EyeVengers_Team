@@ -1,4 +1,3 @@
-/* ===== Global Reset & Base Styles ===== */
 * {
   margin: 0;
   padding: 0;
@@ -16,14 +15,13 @@ body {
   min-height: 100vh;
 }
 
-/* ===== App Layout ===== */
-/* The layout now focuses on the dashboard, Sidebar, and Header */
+
 .app-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* ===== Dashboard Component Styles ===== */
+
 .dashboard {
   flex: 1;
   padding: 2rem;
@@ -53,7 +51,7 @@ body {
   margin-bottom: 2rem;
 }
 
-/* ===== Sidebar Component Styles ===== */
+
 .sidebar {
   width: 280px;
   background: #1e293b;
@@ -101,7 +99,7 @@ body {
   font-weight: 500;
 }
 
-/* ===== Header Component Styles ===== */
+
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -142,7 +140,7 @@ body {
   font-weight: bold;
 }
 
-/* ===== StatsCard Component Styles ===== */
+
 .stats-card {
   background: white;
   padding: 1.5rem;
@@ -225,7 +223,7 @@ body {
   color: #dc2626;
 }
 
-/* ===== AppointmentTable Component Styles ===== */
+
 .appointments-section {
   background: white;
   border-radius: 12px;
@@ -400,7 +398,7 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== Responsive Design ===== */
+
 @media (max-width: 1024px) {
   .sidebar {
     width: 240px;

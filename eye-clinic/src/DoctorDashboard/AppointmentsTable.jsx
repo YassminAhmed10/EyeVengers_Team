@@ -75,9 +75,8 @@ const AppointmentsTable = () => {
   };
 
   const handleViewMedicalRecord = (patientName, patientId) => {
-    // Navigate with both patient name and ID
     navigate(`/doctor/view-medical-record/${encodeURIComponent(patientName)}`, {
-      state: { patientId } // Pass patient ID via state
+      state: { patientId } 
     });
   };
 

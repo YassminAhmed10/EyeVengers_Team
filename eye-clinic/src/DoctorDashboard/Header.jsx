@@ -1,117 +1,158 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 
 const Header = () => {
-  const currentDate = new Date().toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
-
-  const [isOpen, setIsOpen] = useState(false); // حالة Dropdown
-  const [currentTime, setCurrentTime] = useState(new Date()); // حالة الساعة
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const dropdownRef = useRef(null);
 
-  // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // تحديث الساعة كل ثانية
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer); // تنظيف الـ interval عند إلغاء التثبيت
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  // تنسيق الوقت
-  const formattedTime = currentTime.toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true
+  const formattedTime = currentTime.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
   });
 
+  const fullDate = currentTime.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const dayOfWeek = currentTime.toLocaleDateString("en-US", { weekday: "short" });
+
   return (
-    <header className="bg-primary shadow-sm p-8 flex justify-between items-center sticky top-0 z-10">
+<header className="bg-white shadow-md border-b border-gray-200 py-10 px-0 flex items-center justify-between sticky top-0 z-50 min-h-[250px] w-full">
       
-      {/* Title and Date Section */}
-      <div className="flex flex-col gap-3">
-        <h2 className="text-4xl font-heading font-bold text-text"> 
-          Doctor's Dashboard
-        </h2>
-        <div className="flex items-center gap-4">
-          <p className="text-lg font-medium text-text/80 bg-secondary/30 px-3 py-1 rounded-md w-fit">
-            {currentDate}
+      <div className="w-full flex justify-between items-center px-8">
+        
+        <div className="flex flex-col mt-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 tracking-tight">
+            Doctor's Dashboard
+          </h2>
+          <p className="text-gray-600 text-lg mt-2 font-medium">
+            Welcome back, Dr. Mohab
           </p>
-          {/* الساعة الحقيقية */}
-          <div className="flex items-center gap-2 bg-accent/20 px-3 py-1 rounded-md">
-            <span className="material-symbols-outlined text-text/80 text-lg">
-              schedule
-            </span>
-            <span className="text-lg font-medium text-text/80 font-mono">
-              {formattedTime}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Search + Notification Section */}
-      <div className="flex items-center gap-6">
-        {/* Search Input */}
-        <div className="relative w-[400px] lg:w-[500px] xl:w-[600px]">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text/50 text-xl">
-            search
-          </span>
-          <input
-            className="w-full pl-14 pr-6 py-4 rounded-xl bg-neutral border border-text/20 focus:ring-2 focus:ring-accent focus:border-accent text-xl placeholder-text/50 shadow-lg transition-all duration-300"
-            type="text"
-            placeholder="Search patients, appointments..."
-          />
         </div>
 
-        {/* Notification Button + Dropdown */}
-        <div className="relative" ref={dropdownRef}>
-          <button
-            className="relative p-3 text-text/70 hover:text-accent transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <span className="material-symbols-outlined text-4xl">notifications</span>
-            <span className="absolute top-2 right-2 block h-3.5 w-3.5 rounded-full bg-red-600"></span>
-          </button>
-
-          {/* Dropdown Content */}
-          {isOpen && (
-            <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg overflow-hidden z-20">
-              <div className="p-4 border-b border-gray-200 font-semibold text-gray-800">
-                Notifications
+        
+        <div className="flex items-center gap-8 mt-3">
+          
+          <div className="flex items-center gap-5 bg-blue-50 rounded-2xl px-8 py-5 border border-blue-200 shadow-md min-w-[480px]">
+            
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-500 text-white rounded-xl p-3">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </div>
-              <div className="max-h-64 overflow-y-auto">
-                <ul>
-                  <li className="px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer">
-                    Patient Yassmin Ahmed checked in
-                  </li>
-                  <li className="px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer">
-                    Appointment with Maysoun Hassan cancelled
-                  </li>
-                  <li className="px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer">
-                    New message from Zeina Mohamed
-                  </li>
-                  <li className="px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer">
-                    Lab results ready for Doha Waleed
-                  </li>
-                </ul>
+              <div className="flex flex-col">
+                <span className="text-blue-700 text-sm font-semibold uppercase tracking-wide">
+                  {dayOfWeek}
+                </span>
+                <span className="text-blue-800 text-2xl font-bold">
+                  {currentTime.getDate()}{" "}
+                  {currentTime.toLocaleDateString("en-US", { month: "short" })}
+                </span>
               </div>
             </div>
-          )}
+
+            <div className="h-10 w-px bg-blue-300"></div>
+
+            <div className="text-blue-700 text-base font-semibold min-w-[200px] truncate">
+              {fullDate}
+            </div>
+
+            <div className="h-10 w-px bg-blue-300"></div>
+
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-500 text-white rounded-xl p-3">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-blue-700 text-sm font-semibold">
+                  Local Time
+                </span>
+                <span className="text-blue-800 text-2xl font-bold font-mono tracking-wider">
+                  {formattedTime}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          
+          <div className="relative" ref={dropdownRef}>
+            <button
+              className="relative p-4 bg-blue-500 hover:bg-blue-600 rounded-2xl text-white transition-all duration-300 shadow-md hover:shadow-lg"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+              </svg>
+              <span className="absolute top-2.5 right-2.5 block h-3.5 w-3.5 rounded-full bg-red-500 ring-2 ring-white"></span>
+            </button>
+
+            {isOpen && (
+              <div className="absolute right-0 mt-3 w-96 bg-white rounded-2xl shadow-2xl overflow-hidden z-50 border border-gray-200">
+                <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100 flex justify-between items-center">
+                  <h3 className="font-bold text-gray-800 text-lg">Notifications</h3>
+                  <span className="text-sm bg-blue-500 text-white px-3 py-1 rounded-full font-medium">
+                    4 new
+                  </span>
+                </div>
+                <div className="max-h-96 overflow-y-auto divide-y divide-gray-100">
+                  <div className="p-4 hover:bg-blue-50 cursor-pointer">
+                    <p className="text-base font-semibold text-gray-900">Patient checked in</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Yassmin Ahmed has arrived for her appointment
+                    </p>
+                  </div>
+                  <div className="p-4 hover:bg-blue-50 cursor-pointer">
+                    <p className="text-base font-semibold text-gray-900">Appointment cancelled</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Maysoun Hassan cancelled her 3:00 PM appointment
+                    </p>
+                  </div>
+                  <div className="p-4 hover:bg-blue-50 cursor-pointer">
+                    <p className="text-base font-semibold text-gray-900">New message</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Zeina Mohamed sent you a message
+                    </p>
+                  </div>
+                </div>
+                <div className="p-3 border-t border-gray-200 bg-blue-50 text-center">
+                  <button className="text-sm text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+                    View All Notifications
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>

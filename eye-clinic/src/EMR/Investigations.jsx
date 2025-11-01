@@ -20,12 +20,12 @@ const defaultInvestigations = [
 ];
 
 const Investigations = ({ data, setData }) => {
-  // البيانات الافتراضية لو لسة فاضية
+  
   const selectedInvestigations = data.selectedInvestigations || [];
   const customInvestigation = data.customInvestigation || "";
   const notes = data.notes || "";
 
-  // اختيار أو إزالة التحاليل
+  
   const handleSelect = (test) => {
     const updated = selectedInvestigations.includes(test)
       ? selectedInvestigations.filter((item) => item !== test)
@@ -33,7 +33,7 @@ const Investigations = ({ data, setData }) => {
     setData({ ...data, selectedInvestigations: updated });
   };
 
-  // إضافة تحليل جديد يدويًا
+  
   const handleAddCustom = () => {
     if (customInvestigation.trim() !== "") {
       const updated = [...selectedInvestigations, customInvestigation.trim()];
@@ -51,7 +51,7 @@ const Investigations = ({ data, setData }) => {
         Select or add investigations requested for the patient.
       </Typography>
 
-      {/* التحاليل الجاهزة */}
+      
       <Stack direction="row" flexWrap="wrap" gap={1} sx={{ mb: 2 }}>
         {defaultInvestigations.map((test) => (
           <Chip
@@ -64,7 +64,7 @@ const Investigations = ({ data, setData }) => {
         ))}
       </Stack>
 
-      {/* إضافة تحليل جديد */}
+      
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
         <TextField
           label="Add Custom Investigation"
@@ -81,7 +81,7 @@ const Investigations = ({ data, setData }) => {
 
       <Divider sx={{ my: 2 }} />
 
-      {/* التحاليل المختارة */}
+      
       <Typography variant="subtitle1" gutterBottom>
         Selected Investigations:
       </Typography>
@@ -109,7 +109,7 @@ const Investigations = ({ data, setData }) => {
 
       <Divider sx={{ my: 2 }} />
 
-      {/* ملاحظات الدكتور */}
+      
       <Typography variant="subtitle1" gutterBottom>
         Notes
       </Typography>
@@ -122,7 +122,7 @@ const Investigations = ({ data, setData }) => {
         onChange={(e) => setData({ ...data, notes: e.target.value })}
       />
 
-      {/* زرار حفظ */}
+      
       <Box sx={{ textAlign: "right", mt: 1 }}>
         <Button variant="contained" color="primary">
           Save Investigations

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import DoctorSidebar from "../DoctorDashboard/Sidebar";
 import "./Clinic.css";
 
-// Equipment Component (inline)
 function Equipment() {
   const equipment = [
     { id: 1, name: "Slit Lamp", type: "Diagnostic", status: "Working", last: "2025-09-12", next: "2026-03-12" },
@@ -35,7 +34,6 @@ function Equipment() {
   );
 }
 
-// Sanitization Component (inline)
 function Sanitization() {
   const areas = [
     { id: 1, area: "Exam Room", frequency: "Daily", last: "2025-10-26", next: "2025-10-27", status: "Done" },
@@ -67,7 +65,6 @@ function Sanitization() {
   );
 }
 
-// Supplies Component (inline)
 function Supplies() {
   const supplies = [
     { id: 1, name: "Gloves", qty: 8, reorder: 5, supplier: "MediSupply" },
@@ -98,7 +95,6 @@ function Supplies() {
   );
 }
 
-// Maintenance Component (inline)
 function MaintenanceTasks() {
   const tasks = [
     { id: 1, task: "Replace sterilizer gasket", category: "Equipment", due: "2025-11-15", status: "Scheduled" },
@@ -129,7 +125,6 @@ function MaintenanceTasks() {
   );
 }
 
-// Waste Management Component (inline)
 function WasteManagement() {
   const waste = [
     { id: 1, type: "Biohazard", schedule: "Mon & Thu", last: "2025-10-24", next: "2025-10-27" },
@@ -160,7 +155,6 @@ function WasteManagement() {
   );
 }
 
-// Reports Component (inline)
 function Reports() {
   const summary = {
     equipment: 2,
@@ -182,7 +176,6 @@ function Reports() {
   );
 }
 
-// Main ClinicPage Component
 function ClinicPage() {
   const [activeSection, setActiveSection] = useState("equipment");
 
@@ -216,17 +209,13 @@ function ClinicPage() {
 
   return (
     <div className="app-container">
-      {/* Use Doctor Sidebar */}
       <DoctorSidebar />
       
-      {/* Main Content */}
       <div className="clinic-operations-container">
         <div className="operations-header">
           <div className="header-content">
             <h1>Clinic System</h1>
-            <p>Manage clinic operations efficiently</p>
 
-            {/* Navigation Tabs */}
             <nav className="operations-nav">
               {navigationItems.map((item) => (
                 <button

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
-import Sidebar from "../DoctorDashboard/Sidebar";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import DoctorSidebar from "../DoctorDashboard/Sidebar";
+import ReceptionistSidebar from "../Appointment/ReceptionistSidebar";
 import './Settings.css';
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
   const [formData, setFormData] = useState({
-    name: 'Dr. Mohab Khairy',
-    email: 'mohab.khairy@clinic.com',
-    phone: '+20 123 456 7890',
-    specialty: 'Ophthalmologist',
-    clinicName: 'Eye Care Clinic',
-    address: 'Cairo, Egypt',
+    name: '',
+    email: '',
+    phone: '',
+    specialty: '',
+    clinicName: '',
+    address: '',
     workStart: '09:00',
     workEnd: '17:00'
   });
@@ -20,6 +22,45 @@ function SettingsPage() {
     payments: false
   });
   const [selectedTheme, setSelectedTheme] = useState('light');
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    const isAuthenticated = localStorage.getItem("isAuthenticated");
+    
+    if (!isAuthenticated || !role) {
+      navigate("/login");
+      return;
+    }
+    setUserRole(role);
+
+    if (role === 'Doctor') {
+      setFormData({
+        name: 'Dr. Mohab Khairy',
+        email: 'mohab.khairy@clinic.com',
+        phone: '+20 123 456 7890',
+        specialty: 'Ophthalmologist',
+        clinicName: 'Eye Care Clinic',
+        address: 'Cairo, Egypt',
+        workStart: '09:00',
+        workEnd: '17:00'
+      });
+    } else if (role === 'Receptionist') {
+      setFormData({
+        name: 'Receptionist',
+        email: 'receptionist@clinic.com',
+        phone: '+20 123 456 7891',
+        specialty: '',
+        clinicName: 'Eye Care Clinic',
+        address: 'Cairo, Egypt',
+        workStart: '08:00',
+        workEnd: '18:00'
+      });
+    }
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -47,15 +88,46 @@ function SettingsPage() {
     { id: 'security', label: 'Security', icon: 'lock' }
   ];
 
+  const renderSidebar = () => {
+    if (userRole === "Receptionist") {
+      return <ReceptionistSidebar />;
+    } else if (userRole === "Doctor") {
+      return <DoctorSidebar />;
+    }
+    return null;
+  };
+
+  const getPageTitle = () => {
+    if (userRole === 'Doctor') {
+      return "Doctor Settings";
+    } else if (userRole === 'Receptionist') {
+      return "Receptionist Settings";
+    }
+    return "Settings";
+  };
+
+  const getPageSubtitle = () => {
+    if (userRole === 'Doctor') {
+      return "Manage your account and clinic preferences";
+    } else if (userRole === 'Receptionist') {
+      return "Manage your receptionist account and preferences";
+    }
+    return "Manage your account preferences";
+  };
+
+  if (!userRole) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="settings-wrapper">
-      <Sidebar />
+      {renderSidebar()}
       
       <div className="settings-page">
         <div className="settings-header">
           <div>
-            <h2 className="settings-title">Settings</h2>
-            <p className="settings-subtitle">Manage your account and clinic preferences</p>
+            <h2 className="settings-title">{getPageTitle()}</h2>
+            <p className="settings-subtitle">{getPageSubtitle()}</p>
           </div>
           <button className="btn-save" onClick={handleSave}>
             <span className="material-symbols-outlined">save</span>
@@ -78,7 +150,6 @@ function SettingsPage() {
           </div>
 
           <div className="settings-content">
-            {/* Account Tab Content */}
             {activeTab === 'account' && (
               <div className="settings-section">
                 <div className="section-header">
@@ -88,7 +159,10 @@ function SettingsPage() {
 
                 <div className="profile-photo-section">
                   <img 
-                    src="src/images/doctor.jpg" 
+                    src={userRole === 'Doctor' 
+                      ? "https://via.placeholder.com/80x80/0077B6/FFFFFF?text=DR" 
+                      : "https://via.placeholder.com/80x80/00B4D8/FFFFFF?text=R"
+                    }
                     alt="Profile" 
                     className="profile-photo"
                   />
@@ -135,29 +209,27 @@ function SettingsPage() {
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label>Specialty</label>
-                    <input
-                      type="text"
-                      name="specialty"
-                      value={formData.specialty}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
+                  {userRole === 'Doctor' && (
+                    <div className="form-group">
+                      <label>Specialty</label>
+                      <input
+                        type="text"
+                        name="specialty"
+                        value={formData.specialty}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
-            {/* Clinic Tab Content */}
             {activeTab === 'clinic' && (
               <div className="settings-section">
                 <div className="section-header">
                   <h3>Clinic Information</h3>
-                  <p>Manage your clinic details and branding</p>
-             
-
-                  
+                  <p>Manage your clinic details and working hours</p>
                 </div>
 
                 <div className="form-grid">
@@ -208,7 +280,6 @@ function SettingsPage() {
               </div>
             )}
 
-            {/* Appearance Tab Content */}
             {activeTab === 'appearance' && (
               <div className="settings-section">
                 <div className="section-header">
@@ -275,7 +346,6 @@ function SettingsPage() {
               </div>
             )}
 
-            {/* Notifications Tab Content */}
             {activeTab === 'notifications' && (
               <div className="settings-section">
                 <div className="section-header">
@@ -320,28 +390,29 @@ function SettingsPage() {
                     </label>
                   </div>
 
-                  <div className="notification-item">
-                    <div className="notification-info">
-                      <span className="material-symbols-outlined">payments</span>
-                      <div>
-                        <h4>Payment Alerts</h4>
-                        <p>Notifications for payments and invoices</p>
+                  {userRole === 'Receptionist' && (
+                    <div className="notification-item">
+                      <div className="notification-info">
+                        <span className="material-symbols-outlined">payments</span>
+                        <div>
+                          <h4>Payment Alerts</h4>
+                          <p>Notifications for payments and invoices</p>
+                        </div>
                       </div>
+                      <label className="toggle-switch">
+                        <input
+                          type="checkbox"
+                          checked={notifications.payments}
+                          onChange={() => handleNotificationChange('payments')}
+                        />
+                        <span className="toggle-slider"></span>
+                      </label>
                     </div>
-                    <label className="toggle-switch">
-                      <input
-                        type="checkbox"
-                        checked={notifications.payments}
-                        onChange={() => handleNotificationChange('payments')}
-                      />
-                      <span className="toggle-slider"></span>
-                    </label>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
 
-            {/* Security Tab Content */}
             {activeTab === 'security' && (
               <div className="settings-section">
                 <div className="section-header">

@@ -3,12 +3,7 @@ import { Box, Typography, IconButton, Grid, Button } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
 const mockOldFiles = [
-//   {
-//     id: 1,
-//     name: "Fundus_May2024.jpg",
-//     url: "https://static.royacdn.com/Site-76541409-4f72-43f9-b369-2d2bc9eaf57f/shutterstock_716954665.jpg", // حطي الصورة هنا في public/images
-//     type: "image",
-//   },
+
   {
     id: 2,
     name: "CBC_Report.pdf",

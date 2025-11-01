@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import logo from "../images/logo.png";
 import "./Sidebar.css";
 
 const Sidebar = () => {
@@ -7,24 +8,22 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear authentication data
+    
     localStorage.removeItem("userRole");
     localStorage.removeItem("isAuthenticated");
     
-    // Navigate to login page
+   
     navigate("/login");
   };
 
   return (
     <aside className="doctor-sidebar">
-      {/* Header with Clinic Logo and Doctor Profile */}
+   
       <div className="sidebar-header">
         <div className="clinic-logo">
-          <img 
-            src="/images/logo.png" 
-            alt="EyeCare Clinic Logo" 
-            className="clinic-logo-img"
-          />
+          <img src={logo} alt="EyeCare Clinic Logo" 
+          className="clinic-logo-img" />
+          
         </div>
         <div className="doctor-profile-header">
           <h1>Dr. Mohab Khairy</h1>
@@ -32,7 +31,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Navigation */}
+    
       <nav className="sidebar-nav">
         <Link 
           to="/doctor" 
@@ -56,6 +55,7 @@ const Sidebar = () => {
         >
           <span className="nav-icon material-symbols-outlined">calendar_month</span>
           <span className="nav-label">Appointments</span>
+          <span className="nav-badge">5</span>
         </Link>
 
         <Link 
@@ -82,7 +82,7 @@ const Sidebar = () => {
           <span className="nav-label">Settings</span>
         </Link>
 
-        {/* Logout Button - Red Color at Bottom */}
+        
         <div 
           className="nav-item logout-button"
           onClick={handleLogout}
@@ -92,16 +92,21 @@ const Sidebar = () => {
         </div>
       </nav>
 
-      {/* User Profile Footer */}
-      <div className="user-profile">
-        <div className="user-avatar">
-          <span className="material-symbols-outlined">person</span>
-        </div>
-        <div className="user-info">
-          <h3>Dr. Mohab Khairy</h3>
-          <p>Ophthalmologist</p>
-        </div>
-      </div>
+      
+<div className="user-profile">
+  <div className="user-avatar">
+    <img 
+      src="/src/images/doctor.jpg" 
+      alt="Doctor Profile" 
+      className="user-avatar-img"
+    />
+  </div>
+  <div className="user-info">
+    <h3>Dr. Mohab Khairy</h3>
+    <p>Ophthalmologist</p>
+  </div>
+</div>
+
     </aside>
   );
 };

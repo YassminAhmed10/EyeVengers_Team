@@ -7,11 +7,10 @@ const ReceptionistPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // أول ما الصفحة تفتح، يروح مباشرة لصفحة المواعيد
     navigate("/appointments");
   }, [navigate]);
 
-  return null; // مش محتاج نعرض أي حاجة هنا
+  return null; 
 };
 
 export default ReceptionistPage;
